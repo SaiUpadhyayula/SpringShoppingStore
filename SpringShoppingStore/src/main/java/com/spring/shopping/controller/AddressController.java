@@ -16,5 +16,6 @@ public class AddressController {
 	public String getAddressDetailsPage(HttpServletRequest request, Model model) {
 		model.addAttribute("page", changeAddressPage);
 		return "account";
+		
 	}
 }
