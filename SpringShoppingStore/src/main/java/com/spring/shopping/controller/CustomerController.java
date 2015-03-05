@@ -1,0 +1,129 @@
+package com.spring.shopping.controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.spring.shopping.model.Customer;
+import com.spring.shopping.service.CartService;
+import com.spring.shopping.service.CustomerService;
+
+@Controller
+public class CustomerController {
+
+	private HttpSession session;
+	@Autowired
+	private CustomerService customerService;
+
+	/**
+	 * This method used to Validate the customer and login to the application
+	 * 
+	 * If the user wants to login after adding items into the shopping cart, by
+	 * clicking on Checkout Link, the user will be redirected to checkout page
+	 * else the user will be redirected to home page.
+	 * 
+	 * @param model
+	 * @param request
+	 * @return checkout/home page
+	 */
+
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public String checkForUserLogin(
+			@RequestParam(value = "userName", required = true) String userName,
+			@RequestParam(value = "password", required = true) String password,
+			Model model, HttpServletRequest request) {
+		Customer customer = validateCustomer(userName, password);
+		session = request.getSession();
+		CartService cartService = (CartService) session
+				.getAttribute("cartInfo");
+		session.setAttribute("customer", customer);
+		if (cartService != null && customer != null) {
+			model.addAttribute("prodList", cartService.getProductsList());
+			int numberOfItems = cartService.getNumberOfItems();
+			model.addAttribute("numberOfItems", numberOfItems);
+			return "redirect:checkout";
+		} else if (customer != null) {
+			model.addAttribute("status", "fail");
+			return "redirect:home";
+		}
+		return password;
+
+	}
+
+	private Customer validateCustomer(String userName, String password) {
+		Customer customer = customerService.validateUsers(userName, password);
+		return customer;
+	}
+
+	/**
+	 * This method used to Register the Customer in Application
+	 * 
+	 * 
+	 * @param customer
+	 * @param model
+	 * @param request
+	 * @return login
+	 */
+
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public String registerUser(
+			@RequestParam(value = "userName", required = true) String userName,
+			@RequestParam(value = "password", required = true) String password,
+			@RequestParam(value = "emailAddress", required = true) String email,
+			@ModelAttribute("customerForm") Customer customer, Model model,
+			RedirectAttributes redir, HttpServletRequest request) {
+		if (validateCustomer(userName, password) == null) {
+			int result = customerService.registerUser(customer);
+			redir.addFlashAttribute("result", result);
+		} else {
+			redir.addFlashAttribute("regStatus", "FAIL");
+		}
+		redir.addFlashAttribute("registerFlag", true);
+		return "redirect:login";
+
+	}
+
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String getLoginPage(HttpServletRequest request, Model model) {
+		Boolean registerFlag = (Boolean) model.asMap().get("registerFlag");
+		Integer result = (Integer) model.asMap().get("result");
+		if (registerFlag != null && registerFlag != false) {
+//			String regStatus = (String) model.asMap().get("regStatus");
+			if (result != null && result != 0) {
+				return "redirect:successSignUp";
+			} else {
+				return "redirect:failureSignUp";
+			}
+		} else {
+			return "login";
+		}
+	}
+
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logout(HttpServletRequest request, Model model) {
+		session = request.getSession();
+		session.removeAttribute("customer");
+		session.invalidate();
+		return "redirect:home";
+	}
+
+	@RequestMapping(value = "/successSignUp", method = RequestMethod.GET)
+	public String signupSuccess(Model model) {
+		model.addAttribute("result", 1);
+		return "login";
+	}
+
+	@RequestMapping(value = "/failureSignUp", method = RequestMethod.GET)
+	public String signupFailure(Model model) {
+		model.addAttribute("result", 0);
+		return "login";
+	}
+}
