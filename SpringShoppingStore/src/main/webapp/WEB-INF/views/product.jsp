@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -235,47 +236,76 @@
 						</div>
 					</div>
 					<!--/product-details-->
-					<div class="category-tab shop-details-tab">
-						<div class="col-sm-12">
-							<ul class="nav nav-tabs">
-								<li class="active"><a href="#reviews" data-toggle="tab">Reviews
-										(5)</a></li>
-							</ul>
-						</div>
-						<div class="tab-content">
-							<div class="tab-pane fade active in" id="reviews">
+					<c:choose>
+						<c:when test="${not empty customer}">
+							<div class="category-tab shop-details-tab">
 								<div class="col-sm-12">
-									<ul>
-										<li><a href=""><i class="fa fa-user"></i>EUGEN</a></li>
-										<li><a href=""><i class="fa fa-clock-o"></i>12:41 PM</a></li>
-										<li><a href=""><i class="fa fa-calendar-o"></i>31 DEC
-												2014</a></li>
+									<ul class="nav nav-tabs">
+										<li class="active"><a href="#reviews" data-toggle="tab">Reviews(<c:out
+													value="${fn:length(reviewsList)}" />)
+										</a></li>
 									</ul>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-										elit, sed do eiusmod tempor incididunt ut labore et dolore
-										magna aliqua.Ut enim ad minim veniam, quis nostrud
-										exercitation ullamco laboris nisi ut aliquip ex ea commodo
-										consequat.Duis aute irure dolor in reprehenderit in voluptate
-										velit esse cillum dolore eu fugiat nulla pariatur.</p>
-									<p>
-										<b>Write Your Review</b>
-									</p>
+								</div>
+								<div class="tab-content">
+									<div class="tab-pane fade active in" id="reviews">
+										<div class="col-sm-12">
+											<div>
+												<c:forEach var="review" items="${reviewsList}">
+													<ul>
+														<li><a href="account"><i class="fa fa-user"></i>
+																<c:out value="${customer.userName}" /></a></li>
+														<li><a href=""><i class="fa fa-calendar-o"></i> <c:out
+																	value="${review.date}" /></a></li>
+													</ul>
+													<strong>
+														<c:out value="${review.reviewTitle}" />
+													</strong>
+													<p>
+														<c:out value="${review.reviewText}" />
+													</p>
+												</c:forEach>
+											</div>
+											<p>
+												<b>Write Your Review</b>
+											</p>
 
-									<form action="#">
-										<span> <input type="text" placeholder="Your Name" /> <input
-											type="email" placeholder="Email Address" />
-										</span>
-										<textarea name=""></textarea>
-										<b>Rating: </b> <img
-											src="resources/images/product-details/rating.png" alt="" />
-										<button type="button" class="btn btn-default pull-right">
-											Submit</button>
-									</form>
+											<form method="POST" action="reviews/product">
+												<input type="hidden" name="productId"
+													value="${product.productId}" /> <span> <input
+													type="text" name="reviewTitle" placeholder="Review Title" />
+													<input type="email" placeholder="Email Address" />
+												</span>
+
+												<textarea name="reviewText"></textarea>
+												<b>Rating: </b> <select name="rating">
+													<option value="Excellent">Excellent</option>
+													<option value="Very Good">Very Good</option>
+													<option value="Good">Good</option>
+													<option value="Not Bad">Not Bad</option>
+													<option value="Bad">Bad</option>
+												</select>
+												<button type="submit" class="btn btn-default pull-right">
+													Submit</button>
+											</form>
+										</div>
+									</div>
+
 								</div>
 							</div>
-
-						</div>
-					</div>
+						</c:when>
+						<c:otherwise>
+							<div class="category-tab shop-details-tab">
+								<div class="col-sm-12">
+									<ul class="nav nav-tabs">
+										<li class="active"><a href="#reviews" data-toggle="tab">Reviews</a></li>
+									</ul>
+								</div>
+								<div class="tab-content">
+									<a href="login">Log In to Create a Review</a>
+								</div>
+							</div>
+						</c:otherwise>
+					</c:choose>
 					<!--/category-tab-->
 
 				</div>

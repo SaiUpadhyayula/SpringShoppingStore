@@ -1,6 +1,11 @@
 package com.spring.shopping.controller;
 
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.spring.shopping.model.Customer;
+import com.spring.shopping.model.Product;
 import com.spring.shopping.model.ReviewForm;
+import com.spring.shopping.service.ProductConfigService;
 import com.spring.shopping.service.ReviewService;
 
 @Controller
@@ -20,24 +27,48 @@ public class ReviewsController {
 
 	@Autowired
 	private ReviewService reviewService;
+	@Autowired
+	private ProductConfigService productConfigService;
+	private HttpSession session;
 
 	@RequestMapping(value = "/reviews", method = RequestMethod.GET)
 	public String getReviewsPage(HttpServletRequest request, Model model) {
 		model.addAttribute("page", reviewsPage);
+		session = request.getSession();
+		Customer customer = (Customer) session.getAttribute("customer");
+		if (customer != null) {
+			List<ReviewForm> reviewList = reviewService
+					.getReviewByCustomer(customer);
+			List<Product> productList = new ArrayList<Product>();
+			for (ReviewForm review : reviewList) {
+				productList.add(productConfigService.getProductById(review
+						.getProductId()));
+			}
+			if (!productList.isEmpty()) {
+				model.addAttribute("products", productList);
+			}
+			model.addAttribute("customerReviews", reviewList);
+		}
 		return "account";
 	}
 
-	@RequestMapping(value = "/reviews/product/{productId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/reviews/product", method = RequestMethod.POST)
 	public String reviewProduct(HttpServletRequest request, Model model,
-			@ModelAttribute("review") ReviewForm reviewForm, Long productId) {
-		String reviewTitle = (String) request.getAttribute("reviewTitle");
-		String reviewText = (String) request.getAttribute("reviewText");
+			@ModelAttribute("review") ReviewForm reviewForm)
+			throws ParseException {
+		String reviewTitle = (String) request.getParameter("reviewTitle");
+		String reviewText = (String) request.getParameter("reviewText");
+		Long productId = Long.parseLong(request.getParameter("productId"));
 		reviewForm.setReviewTitle(reviewTitle);
 		reviewForm.setReviewText(reviewText);
+		reviewForm.setProductId(productId);
 		Customer customer = (Customer) request.getSession().getAttribute(
 				"customer");
+		String rating = request.getParameter("rating");
 		reviewForm.setCustomerId(customer.getCustomerId());
-		reviewService.reviewProduct(reviewForm, productId);
-		return "";
+		reviewForm.setRating(rating);
+		reviewService.reviewProduct(reviewForm);
+		return "redirect:/product?productId=" + productId;
 	}
+
 }

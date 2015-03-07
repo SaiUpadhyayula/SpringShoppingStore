@@ -1,20 +1,16 @@
 package com.spring.shopping.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.util.Date;
 
-@Entity
-@Table(name = "review")
 public class ReviewForm {
-	@Id
-	@Column(name = "Review_Id")
+
 	private Long reviewId;
 	private Long customerId;
 	private Long productId;
 	private String reviewTitle;
 	private String reviewText;
+	private String rating;
+	private Date date;
 
 	public Long getReviewId() {
 		return reviewId;
@@ -54,5 +50,21 @@ public class ReviewForm {
 
 	public void setProductId(Long productId) {
 		this.productId = productId;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public String getRating() {
+		return rating;
+	}
+
+	public void setRating(String rating) {
+		this.rating = rating;
 	}
 }

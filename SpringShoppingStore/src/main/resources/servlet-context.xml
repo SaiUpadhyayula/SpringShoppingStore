@@ -31,6 +31,20 @@
 	<!-- <beans:import resource="applicationContext-jdbc.xml" /> -->
 	<beans:import resource="applicationContext-jpa.xml" />
 
+	<beans:bean id="cartService" class="com.spring.shopping.service.CartService" />
+
+	<beans:bean id="paymentService" class="com.spring.shopping.service.PaymentServiceImpl" />
+
+	<beans:bean id="addressService" class="com.spring.shopping.service.AddressServiceImpl" />
+
+	<beans:bean id="customerService" class="com.spring.shopping.service.CustomerServiceImpl" />
+
+	<beans:bean id="orderService" class="com.spring.shopping.service.OrderServiceImpl" />
+
+	<beans:bean id="wishListService" class="com.spring.shopping.service.WishListServiceImpl" />
+
+	<beans:bean id="reviewService" class="com.spring.shopping.service.ReviewServiceImpl" />
+
 	<beans:bean id="categoryConfigRepository"
 		class="com.spring.shopping.repository.impl.CategoryConfigRepositoryJdbcImpl">
 		<beans:property name="dataSource" ref="dataSource" />
@@ -52,38 +66,27 @@
 		<beans:property name="dataSource" ref="dataSource" />
 	</beans:bean>
 	
-	<beans:bean id="reviewRepository"
-		class="com.spring.shopping.repository.impl.ReviewRepositoryHibernateImpl">
-	</beans:bean>
-
-	<beans:bean id="cartService" class="com.spring.shopping.service.CartService" />
-
-	<beans:bean id="paymentService" class="com.spring.shopping.service.PaymentServiceImpl" />
-
-	<beans:bean id="addressService" class="com.spring.shopping.service.AddressServiceImpl" />
-
-	<beans:bean id="customerService" class="com.spring.shopping.service.CustomerServiceImpl" />
-
-	<beans:bean id="orderService" class="com.spring.shopping.service.OrderServiceImpl" />
-
-	<beans:bean id="wishListService" class="com.spring.shopping.service.WishListServiceImpl" />
-
-	<beans:bean id="reviewService" class="com.spring.shopping.service.ReviewServiceImpl" />
-
 	<beans:bean id="addressRepository"
 		class="com.spring.shopping.repository.impl.AddressRepositoryJdbcImpl">
 		<beans:property name="dataSource" ref="dataSource"></beans:property>
 	</beans:bean>
+	
 	<beans:bean id="paymentRepository"
 		class="com.spring.shopping.repository.impl.PaymentRepositoryJdbcImpl">
 		<beans:property name="dataSource" ref="dataSource"></beans:property>
 	</beans:bean>
+	
 	<beans:bean id="orderRepository"
 		class="com.spring.shopping.repository.impl.OrderRepositoryJdbcImpl">
 		<beans:property name="dataSource" ref="dataSource"></beans:property>
 	</beans:bean>
+	
 	<beans:bean id="wishListRepository"
 		class="com.spring.shopping.repository.impl.WishListRepositoryJdbcImpl">
+		<beans:property name="dataSource" ref="dataSource"></beans:property>
+	</beans:bean>
+	
+	<beans:bean id="reviewRepository" class="com.spring.shopping.repository.impl.ReviewRepositoryJdbcImpl">
 		<beans:property name="dataSource" ref="dataSource"></beans:property>
 	</beans:bean>
 </beans:beans>

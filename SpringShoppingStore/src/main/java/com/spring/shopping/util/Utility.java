@@ -19,6 +19,7 @@ public class Utility {
 
 	public static Long generateAddressNumber(AddressForm address,
 			Customer customer) {
-		return Long.parseLong(address.getZipCode()) * customer.getCustomerId();
+		return (long) (Long.parseLong(address.getZipCode())
+				* customer.getCustomerId() * Math.random());
 	}
 }
