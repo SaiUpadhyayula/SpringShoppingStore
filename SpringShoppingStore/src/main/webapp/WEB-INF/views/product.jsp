@@ -149,7 +149,7 @@
 						<!--product-details-->
 						<div class="col-sm-5">
 							<div class="view-product">
-								<img src="resources/images/product-details/1.jpg" alt="" />
+								<img src="resources/images/home/${product.productId}.jpg" alt="" />
 								<h3>ZOOM</h3>
 							</div>
 							<div id="similar-product" class="carousel slide"
