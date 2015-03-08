@@ -29,4 +29,9 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerRepository.changePassword(password, customer);
 	}
 
+	@Override
+	public Customer getCustomerById(Long customerId) {
+		return customerRepository.getCustomerById(customerId);
+	}
+
 }

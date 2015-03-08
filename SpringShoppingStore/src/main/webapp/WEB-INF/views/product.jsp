@@ -250,15 +250,16 @@
 									<div class="tab-pane fade active in" id="reviews">
 										<div class="col-sm-12">
 											<div>
-												<c:forEach var="review" items="${reviewsList}">
+												<c:forEach var="reviewMap" items="${reviewsList}">
+													<c:set var="customer" value="${reviewMap.key}" />
+													<c:set var="review" value="${reviewMap.value}" />
 													<ul>
 														<li><a href="account"><i class="fa fa-user"></i>
 																<c:out value="${customer.userName}" /></a></li>
 														<li><a href=""><i class="fa fa-calendar-o"></i> <c:out
 																	value="${review.date}" /></a></li>
 													</ul>
-													<strong>
-														<c:out value="${review.reviewTitle}" />
+													<strong> <c:out value="${review.reviewTitle}" />
 													</strong>
 													<p>
 														<c:out value="${review.reviewText}" />

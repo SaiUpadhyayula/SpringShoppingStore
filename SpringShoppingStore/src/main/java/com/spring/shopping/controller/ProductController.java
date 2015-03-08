@@ -1,7 +1,9 @@
 package com.spring.shopping.controller;
 
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -18,6 +20,7 @@ import com.spring.shopping.model.Product;
 import com.spring.shopping.model.ReviewForm;
 import com.spring.shopping.service.CartService;
 import com.spring.shopping.service.CategoryConfigService;
+import com.spring.shopping.service.CustomerService;
 import com.spring.shopping.service.ProductConfigService;
 import com.spring.shopping.service.ReviewService;
 
@@ -32,6 +35,8 @@ public class ProductController {
 	private CategoryConfigService categoryConfigurationService;
 	@Autowired
 	private ReviewService reviewService;
+	@Autowired
+	private CustomerService customerService;
 	private HttpSession session;
 
 	/**
@@ -55,10 +60,16 @@ public class ProductController {
 		model.addAttribute("numberOfItems", numberOfItems);
 		session = request.getSession();
 		Customer customer = (Customer) session.getAttribute("customer");
+		Map<Customer, ReviewForm> reviewMap = new HashMap<Customer, ReviewForm>();
 		if (customer != null) {
 			List<ReviewForm> reviewsList = reviewService
 					.getProductReviews(productId);
-			model.addAttribute("reviewsList",reviewsList);
+			for (ReviewForm reviewForm : reviewsList) {
+				Long customerId = reviewForm.getCustomerId();
+				reviewMap.put(customerService.getCustomerById(customerId),
+						reviewForm);
+			}
+			model.addAttribute("reviewsList", reviewMap);
 		}
 		return "product";
 	}

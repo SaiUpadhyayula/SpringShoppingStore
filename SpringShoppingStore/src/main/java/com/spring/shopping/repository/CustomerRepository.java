@@ -9,4 +9,6 @@ public interface CustomerRepository {
 	public Integer registerUser(Customer customer);
 	
 	public boolean changePassword(String password,Customer customer);
+
+	public Customer getCustomerById(Long customerId);
 }

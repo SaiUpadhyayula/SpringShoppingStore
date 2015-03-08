@@ -3,7 +3,6 @@ package com.spring.shopping.repository.impl;
 import javax.sql.DataSource;
 
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -18,7 +17,6 @@ import com.spring.shopping.util.CustomerMapper;
 public class CustomerRepositoryJdbcImpl implements CustomerRepository {
 
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-	private JdbcTemplate jdbcTemplate;
 
 	public void setDataSource(DataSource dataSource) {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
@@ -63,6 +61,16 @@ public class CustomerRepositoryJdbcImpl implements CustomerRepository {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public Customer getCustomerById(Long customerId) {
+		String sql = "SELECT * FROM eshopper.Customer c WHERE c.Customer_Id=:customerId";
+		SqlParameterSource sqlParameterSource = new MapSqlParameterSource(
+				"customerId", customerId);
+		Customer customer = namedParameterJdbcTemplate.queryForObject(sql,
+				sqlParameterSource, new CustomerMapper());
+		return customer;
 	}
 
 }

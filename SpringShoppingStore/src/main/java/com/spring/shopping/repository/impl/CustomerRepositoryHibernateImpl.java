@@ -23,4 +23,10 @@ public class CustomerRepositoryHibernateImpl implements CustomerRepository {
 		return false;
 	}
 
+	@Override
+	public Customer getCustomerById(Long customerId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
