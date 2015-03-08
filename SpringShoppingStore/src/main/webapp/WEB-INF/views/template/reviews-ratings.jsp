@@ -11,21 +11,30 @@
 <body>
 	<h1>Reviews & Ratings</h1>
 
-	<c:forEach var="review" items="${customerReviews}">
+	<c:forEach var="entry" items="${customerReviews}">
+		<c:set var="product" value="${entry.key}" />
+		<c:set var="review" value="${entry.value}" />
 		<c:url var="url" value="product">
-			<c:param name="productId" value="${review.productId}" />
+			<c:param name="productId" value="${product.productId}" />
 		</c:url>
+		<c:set var="productId" value="${product.productId}" />
 		<div class="well">
 			<a href="${url}">
 				<h3>
-					${f:getProductById(${review.productId})}
+					<c:out value="${product.name}" />
 				</h3>
 			</a>
 			<h4>
-				
+				Title:
+				<c:out value="${review.reviewTitle}" />
 			</h4>
 			<p>
+				Review:
 				<c:out value="${review.reviewText}" />
+			</p>
+			<p>
+				Rating:
+				<c:out value="${review.rating}" />
 			</p>
 
 		</div>

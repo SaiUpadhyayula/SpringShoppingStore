@@ -126,4 +126,5 @@ public class CustomerController {
 		model.addAttribute("result", 0);
 		return "login";
 	}
+	
 }

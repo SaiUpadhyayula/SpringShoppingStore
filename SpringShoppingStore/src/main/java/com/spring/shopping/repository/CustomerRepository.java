@@ -7,4 +7,6 @@ public interface CustomerRepository {
 	public Customer validateUsers(String userName, String password);
 
 	public Integer registerUser(Customer customer);
+	
+	public boolean changePassword(String password,Customer customer);
 }

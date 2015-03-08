@@ -11,24 +11,37 @@
 <body>
 	<div id="accountForm" class="col-md-8">
 		<h1>Account Information</h1>
-		<form action="" method="post">
+		<form class="form-horizontal" action="" method="post">
 			<div class="form-group">
-				<label for="userName">User Name:</label> <input type="text"
-					class="form-control" name="userName" placeholder="User Name" />
+				<div class="col-sm-9">
+					<label for="userName">User Name:</label> <input type="text"
+						class="form-control" name="userName" placeholder="User Name" />
+				</div>
 			</div>
 			<div class="form-group">
-				<label for="firstName">First Name:</label> <input type="text"
-					class="form-control" name="firstName" placeholder="First Name" />
+				<div class="col-sm-9">
+					<label for="firstName">First Name:</label> <input type="text"
+						class="form-control" name="firstName" placeholder="First Name" />
+				</div>
 			</div>
 			<div class="form-group">
-				<label for="lastName">Last Name:</label> <input type="text"
-					class="form-control" name="lastName" placeholder="Last Name" />
+				<div class="col-sm-9">
+					<label for="lastName">Last Name:</label> <input type="text"
+						class="form-control" name="lastName" placeholder="Last Name" />
+				</div>
 			</div>
 			<div class="form-group">
-				<label for="phoneNumber">Mobile Number:</label> <input type="text"
-					class="form-control" name="phoneNumber" placeholder="Mobile Number" />
+				<div class="col-sm-9">
+					<label for="phoneNumber">Mobile Number:</label> <input type="text"
+						class="form-control" name="phoneNumber"
+						placeholder="Mobile Number" />
+				</div>
 			</div>
-			<input type="submit" value="Save" class="btn btn-success" />
+			<div class="form-group">
+				<div class="col-sm-9">
+					<input type="submit" value="Save" class="btn btn-success" />
+				</div>
+			</div>
 		</form>
 	</div>
 </body>

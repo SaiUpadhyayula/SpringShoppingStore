@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.spring.shopping.model.AddressForm;
 import com.spring.shopping.model.Customer;
@@ -52,8 +51,7 @@ public class CheckoutController {
 	@RequestMapping(value = "/address", method = RequestMethod.POST)
 	public String validateAddressInformation(
 			@ModelAttribute("addressForm") AddressForm address, Model model,
-			HttpServletRequest request,
-			final RedirectAttributes redirectAttributes) {
+			HttpServletRequest request) {
 		String fullName = request.getParameter("fullName");
 		String address1 = request.getParameter("address1");
 		String address2 = request.getParameter("address2");

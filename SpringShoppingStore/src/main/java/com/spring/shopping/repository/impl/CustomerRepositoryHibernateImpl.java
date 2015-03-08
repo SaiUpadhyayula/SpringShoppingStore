@@ -17,4 +17,10 @@ public class CustomerRepositoryHibernateImpl implements CustomerRepository {
 		return null;
 	}
 
+	@Override
+	public boolean changePassword(String password, Customer customer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

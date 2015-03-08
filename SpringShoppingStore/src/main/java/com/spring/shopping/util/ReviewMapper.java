@@ -18,6 +18,7 @@ public class ReviewMapper implements RowMapper<ReviewForm> {
 		review.setDate(rs.getDate("SubmittedDate"));
 		review.setReviewTitle(rs.getString("ReviewTitle"));
 		review.setRating(rs.getString("Rating"));
+		review.setProductId(rs.getLong("Product_Id"));
 		return review;
 	}
 

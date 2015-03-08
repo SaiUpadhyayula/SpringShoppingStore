@@ -119,4 +119,70 @@ public class Product implements Serializable {
 		this.manufacturer = manufacturer;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((available == null) ? 0 : available.hashCode());
+		result = prime * result
+				+ ((description == null) ? 0 : description.hashCode());
+		result = prime * result
+				+ ((featured == null) ? 0 : featured.hashCode());
+		result = prime * result
+				+ ((manufacturer == null) ? 0 : manufacturer.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((price == null) ? 0 : price.hashCode());
+		result = prime * result
+				+ ((productId == null) ? 0 : productId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Product other = (Product) obj;
+		if (available == null) {
+			if (other.available != null)
+				return false;
+		} else if (!available.equals(other.available))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (featured == null) {
+			if (other.featured != null)
+				return false;
+		} else if (!featured.equals(other.featured))
+			return false;
+		if (manufacturer == null) {
+			if (other.manufacturer != null)
+				return false;
+		} else if (!manufacturer.equals(other.manufacturer))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (price == null) {
+			if (other.price != null)
+				return false;
+		} else if (!price.equals(other.price))
+			return false;
+		if (productId == null) {
+			if (other.productId != null)
+				return false;
+		} else if (!productId.equals(other.productId))
+			return false;
+		return true;
+	}
+
 }

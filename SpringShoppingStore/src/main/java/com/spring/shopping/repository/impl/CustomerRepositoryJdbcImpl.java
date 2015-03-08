@@ -3,6 +3,7 @@ package com.spring.shopping.repository.impl;
 import javax.sql.DataSource;
 
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -17,6 +18,7 @@ import com.spring.shopping.util.CustomerMapper;
 public class CustomerRepositoryJdbcImpl implements CustomerRepository {
 
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	private JdbcTemplate jdbcTemplate;
 
 	public void setDataSource(DataSource dataSource) {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
@@ -45,6 +47,22 @@ public class CustomerRepositoryJdbcImpl implements CustomerRepository {
 				customer);
 
 		return namedParameterJdbcTemplate.update(sql, sqlParameterSource);
+	}
+
+	@Override
+	public boolean changePassword(String password, Customer customer) {
+		String sql = "UPDATE eshopper.customer c SET c.Pass=:password where c.Customer_Id=:customerId";
+		SqlParameterSource namedParameters = new MapSqlParameterSource();
+		((MapSqlParameterSource) namedParameters)
+				.addValue("password", password);
+		((MapSqlParameterSource) namedParameters).addValue("customerId",
+				customer.getCustomerId());
+		int result = namedParameterJdbcTemplate.update(sql, namedParameters);
+		if (result > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

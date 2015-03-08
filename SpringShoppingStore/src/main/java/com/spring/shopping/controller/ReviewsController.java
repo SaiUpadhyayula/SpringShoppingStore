@@ -1,8 +1,9 @@
 package com.spring.shopping.controller;
 
 import java.text.ParseException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -39,15 +40,14 @@ public class ReviewsController {
 		if (customer != null) {
 			List<ReviewForm> reviewList = reviewService
 					.getReviewByCustomer(customer);
-			List<Product> productList = new ArrayList<Product>();
+			Map<Product,ReviewForm> productReviews = new HashMap<Product,ReviewForm>();
 			for (ReviewForm review : reviewList) {
-				productList.add(productConfigService.getProductById(review
-						.getProductId()));
+				Product product = productConfigService.getProductById(review
+						.getProductId());
+				productReviews.put(product, review);
+				
 			}
-			if (!productList.isEmpty()) {
-				model.addAttribute("products", productList);
-			}
-			model.addAttribute("customerReviews", reviewList);
+			model.addAttribute("customerReviews", productReviews);
 		}
 		return "account";
 	}
