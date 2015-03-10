@@ -94,6 +94,7 @@
 									</c:if>
 								</div>
 								<div style="margin-top: 10px" class="form-group">
+									<div class="loginStatus"></div>
 									<div class="col-sm-12 controls">
 										<button id="btn-login" type="submit" class="btn btn-success">Login
 										</button>
@@ -181,7 +182,7 @@
 </body>
 </html>
 <script>
-	$(document).ready(
+	$(document).ready(			
 			function() {
 				$(".dropdown").hover(
 						function() {
@@ -194,5 +195,11 @@
 									.stop(true, true).slideUp("fast");
 							$(this).toggleClass('open');
 						});
-			});
+				var loginStatus = "${loginStatus}";
+				if(loginStatus == 'fail'){
+					$(".loginStatus").text('Login Unsuccessfull.Please Retry');
+				}
+			}
+			
+	);
 </script>

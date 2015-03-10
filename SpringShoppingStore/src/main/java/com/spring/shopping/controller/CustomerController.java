@@ -51,10 +51,12 @@ public class CustomerController {
 			model.addAttribute("numberOfItems", numberOfItems);
 			return "redirect:checkout";
 		} else if (customer != null) {
-			model.addAttribute("status", "fail");
+			model.addAttribute("status", "home");
 			return "redirect:home";
+		} else {
+			model.addAttribute("loginStatus", "fail");
 		}
-		return password;
+		return "redirect:login";
 
 	}
 
@@ -96,7 +98,7 @@ public class CustomerController {
 		Boolean registerFlag = (Boolean) model.asMap().get("registerFlag");
 		Integer result = (Integer) model.asMap().get("result");
 		if (registerFlag != null && registerFlag != false) {
-//			String regStatus = (String) model.asMap().get("regStatus");
+			// String regStatus = (String) model.asMap().get("regStatus");
 			if (result != null && result != 0) {
 				return "redirect:successSignUp";
 			} else {
@@ -126,5 +128,5 @@ public class CustomerController {
 		model.addAttribute("result", 0);
 		return "login";
 	}
-	
+
 }
