@@ -25,6 +25,8 @@ Payments and Processing(Cash on Delivery)
 Features yet to be added
 ------------------------
 
+Product Search
+
 Discounts on Products
 
 Admin Console
