@@ -20,6 +20,7 @@ import com.spring.shopping.model.Product;
 import com.spring.shopping.model.ReviewForm;
 import com.spring.shopping.service.ProductConfigService;
 import com.spring.shopping.service.ReviewService;
+import com.spring.shopping.util.SessionUtils;
 
 @Controller
 public class ReviewsController {
@@ -30,13 +31,14 @@ public class ReviewsController {
 	private ReviewService reviewService;
 	@Autowired
 	private ProductConfigService productConfigService;
+	@SuppressWarnings("unused")
 	private HttpSession session;
 
 	@RequestMapping(value = "/reviews", method = RequestMethod.GET)
 	public String getReviewsPage(HttpServletRequest request, Model model) {
 		model.addAttribute("page", reviewsPage);
-		session = request.getSession();
-		Customer customer = (Customer) session.getAttribute("customer");
+		session = SessionUtils.createSession(request);
+		Customer customer = SessionUtils.getSessionVariables(request, "customer");
 		if (customer != null) {
 			List<ReviewForm> reviewList = reviewService
 					.getReviewByCustomer(customer);

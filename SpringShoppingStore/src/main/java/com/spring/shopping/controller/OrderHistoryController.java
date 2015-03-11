@@ -20,12 +20,14 @@ import com.spring.shopping.model.Order;
 import com.spring.shopping.model.Product;
 import com.spring.shopping.service.AddressService;
 import com.spring.shopping.service.OrderService;
+import com.spring.shopping.util.SessionUtils;
 
 @Controller
 public class OrderHistoryController {
 
 	private static String orderHistoryPage = "template/ordersList";
 	private static String orderDetailsPage = "template/orderDetails";
+	@SuppressWarnings("unused")
 	private HttpSession session;
 	@Autowired
 	private OrderService orderService;
@@ -35,8 +37,8 @@ public class OrderHistoryController {
 	@RequestMapping(value = "/orderHistory", method = RequestMethod.GET)
 	public String getOrderHistoryPage(HttpServletRequest request, Model model) {
 		model.addAttribute("page", orderHistoryPage);
-		session = request.getSession();
-		Customer customer = (Customer) session.getAttribute("customer");
+		session = SessionUtils.createSession(request);
+		Customer customer = SessionUtils.getSessionVariables(request, "customer");
 		if (customer != null) {
 			List<Order> orderList = orderService
 					.getAllOrdersForCustomer(customer);

@@ -18,6 +18,7 @@ import com.spring.shopping.model.Customer;
 import com.spring.shopping.model.Product;
 import com.spring.shopping.service.CartService;
 import com.spring.shopping.service.WishListService;
+import com.spring.shopping.util.SessionUtils;
 
 @Controller
 public class WishListController {
@@ -31,7 +32,7 @@ public class WishListController {
 
 	@RequestMapping(value = "/wishlist", method = RequestMethod.GET)
 	public String getWishListPage(HttpServletRequest request, Model model) {
-		session = request.getSession();
+		session = SessionUtils.createSession(request);
 		model = getWishListProducts(model, session);
 		return "account";
 	}
@@ -135,8 +136,9 @@ public class WishListController {
 	// Method to add product to wishlist
 	// seperated to accomodate in moveToWishList and addToWishlist calls
 	public boolean addProduct(HttpServletRequest request, Long productId) {
-		session = request.getSession();
-		Customer customer = (Customer) session.getAttribute("customer");
+		session = SessionUtils.createSession(request);
+		Customer customer = SessionUtils.getSessionVariables(request,
+				"customer");
 		boolean flag = false;
 		if (customer != null) {
 			return wishListService.addProductToWishList(productId, customer);

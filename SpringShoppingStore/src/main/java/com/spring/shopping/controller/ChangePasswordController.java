@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.spring.shopping.model.Customer;
 import com.spring.shopping.service.CustomerService;
+import com.spring.shopping.util.SessionUtils;
 
 @Controller
 public class ChangePasswordController {
@@ -20,6 +21,7 @@ public class ChangePasswordController {
 	private String changePasswordPage = "template/changepassword";
 	@Autowired
 	private CustomerService customerService;
+	@SuppressWarnings("unused")
 	private HttpSession session;
 
 	@RequestMapping(value = "/change-password", method = RequestMethod.GET)
@@ -37,8 +39,8 @@ public class ChangePasswordController {
 			@RequestParam("password1") String password1,
 			@RequestParam("password2") String password2, Model model,
 			RedirectAttributes redirectAttributes) {
-		session = request.getSession();
-		Customer customer = (Customer) session.getAttribute("customer");
+		session = SessionUtils.createSession(request);
+		Customer customer = SessionUtils.getSessionVariables(request, "customer");
 		boolean flag = customerService.changePassword(password1, customer);
 		redirectAttributes.addFlashAttribute("flag", flag);
 		return "redirect:/change-password";

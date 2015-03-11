@@ -17,6 +17,7 @@ import com.spring.shopping.service.AddressService;
 import com.spring.shopping.service.CartService;
 import com.spring.shopping.service.PaymentService;
 import com.spring.shopping.service.ProductConfigService;
+import com.spring.shopping.util.SessionUtils;
 
 @Controller
 public class CheckoutController {
@@ -34,16 +35,16 @@ public class CheckoutController {
 
 	@RequestMapping(value = "/checkout", method = RequestMethod.GET)
 	public ModelAndView checkOutCart(Model model, HttpServletRequest request) {
-		session = request.getSession();
+		session = SessionUtils.createSession(request);
 		Customer customer = (Customer) session.getAttribute("customer");
 		if (customer != null) {
-			session.setAttribute("cart", cartService);
+			SessionUtils.setSessionVariables(cartService,request,"cart");
 			int numberOfItems = cartService.getNumberOfItems();
 			model.addAttribute("prodList", cartService.getProductsList());
 			model.addAttribute("numberOfItems", numberOfItems);
 			return new ModelAndView("checkout");
 		} else {
-			session.setAttribute("cartInfo", cartService);
+			SessionUtils.setSessionVariables(cartService,request,"cartInfo");
 			return new ModelAndView("login");
 		}
 	}
@@ -65,20 +66,19 @@ public class CheckoutController {
 		address.setCity(city);
 		address.setZipCode(zipCode);
 		address.setState(state);
-		session = request.getSession();
-		Customer customer = (Customer) session.getAttribute("customer");
+		session = SessionUtils.createSession(request);
+		Customer customer = SessionUtils.getSessionVariables(request, "customer");
 		addressService.saveAddress(address, customer);
-		session = request.getSession();
-		session.setAttribute("address", address);
+		SessionUtils.setSessionVariables(address, request, "address");
 		model.addAttribute("prodList", cartService.getProductsList());
 		return "redirect:checkout";
 	}
 
 	@RequestMapping(value = "/payment", method = RequestMethod.GET)
 	public String getPaymentForm(Model model, HttpServletRequest request) {
-		session = request.getSession();
+		session = SessionUtils.createSession(request);
 		session.setAttribute("cart", cartService);
-		model.addAttribute("cartDetails", cartService);
+		SessionUtils.getSessionVariables(request, "cartDetails");
 		return "payment";
 	}
 

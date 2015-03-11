@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.spring.shopping.model.Customer;
 import com.spring.shopping.service.CartService;
 import com.spring.shopping.service.CustomerService;
+import com.spring.shopping.util.SessionUtils;
 
 @Controller
 public class CustomerController {
@@ -41,10 +42,10 @@ public class CustomerController {
 			@RequestParam(value = "password", required = true) String password,
 			Model model, HttpServletRequest request) {
 		Customer customer = validateCustomer(userName, password);
-		session = request.getSession();
-		CartService cartService = (CartService) session
-				.getAttribute("cartInfo");
-		session.setAttribute("customer", customer);
+		session = SessionUtils.createSession(request);
+		CartService cartService = SessionUtils.getSessionVariables(request,
+				"cartInfo");
+		SessionUtils.setSessionVariables(customer, request, "customer");
 		if (cartService != null && customer != null) {
 			model.addAttribute("prodList", cartService.getProductsList());
 			int numberOfItems = cartService.getNumberOfItems();
@@ -111,8 +112,8 @@ public class CustomerController {
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpServletRequest request, Model model) {
-		session = request.getSession();
-		session.removeAttribute("customer");
+		session = SessionUtils.createSession(request);
+		SessionUtils.removeSessionVariables("customer", request);
 		session.invalidate();
 		return "redirect:home";
 	}

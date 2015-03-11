@@ -23,6 +23,7 @@ import com.spring.shopping.service.CategoryConfigService;
 import com.spring.shopping.service.CustomerService;
 import com.spring.shopping.service.ProductConfigService;
 import com.spring.shopping.service.ReviewService;
+import com.spring.shopping.util.SessionUtils;
 
 @Controller
 public class ProductController {
@@ -37,6 +38,7 @@ public class ProductController {
 	private ReviewService reviewService;
 	@Autowired
 	private CustomerService customerService;
+	@SuppressWarnings("unused")
 	private HttpSession session;
 
 	/**
@@ -58,8 +60,8 @@ public class ProductController {
 		model.addAttribute("product", product);
 		int numberOfItems = cartService.getNumberOfItems();
 		model.addAttribute("numberOfItems", numberOfItems);
-		session = request.getSession();
-		Customer customer = (Customer) session.getAttribute("customer");
+		session = SessionUtils.createSession(request);
+		Customer customer = SessionUtils.getSessionVariables(request, "customer");
 		Map<Customer, ReviewForm> reviewMap = new HashMap<Customer, ReviewForm>();
 		if (customer != null) {
 			List<ReviewForm> reviewsList = reviewService

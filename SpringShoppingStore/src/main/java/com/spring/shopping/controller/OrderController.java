@@ -24,6 +24,7 @@ import com.spring.shopping.service.CartService;
 import com.spring.shopping.service.OrderService;
 import com.spring.shopping.service.PaymentService;
 import com.spring.shopping.service.ProductConfigService;
+import com.spring.shopping.util.SessionUtils;
 
 @Controller
 public class OrderController {
@@ -45,12 +46,15 @@ public class OrderController {
 			@ModelAttribute("order") Order order) throws ParseException,
 			IOException {
 
-		session = request.getSession();
+		session = SessionUtils.createSession(request);
 		// Retrieve Details about the Cart,Customer and Address Details
 		// used to create detailed Order
-		CartService cartService = (CartService) session.getAttribute("cart");
-		Customer customer = (Customer) session.getAttribute("customer");
-		AddressForm address = (AddressForm) session.getAttribute("address");
+		CartService cartService = SessionUtils.getSessionVariables(request,
+				"cart");
+		Customer customer = SessionUtils.getSessionVariables(request,
+				"customer");
+		AddressForm address = SessionUtils.getSessionVariables(request,
+				"address");
 
 		orderService.createOrder(order, cartService, customer, address);
 		payAmountByCreditCard(creditCardForm, request);
@@ -68,7 +72,7 @@ public class OrderController {
 
 	@RequestMapping(value = "/order", method = RequestMethod.GET)
 	public String getOrderConfirmPage(Model model, HttpServletRequest request) {
-		Order order = (Order) session.getAttribute("orderDetails");
+		Order order = SessionUtils.getSessionVariables(request, "orderDetails");
 		model.addAttribute("orderDetails", order);
 		List<Product> productsList = orderService.getAllOrderItems(order);
 		model.addAttribute("prodList", productsList);

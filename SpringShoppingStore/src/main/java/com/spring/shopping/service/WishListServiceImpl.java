@@ -30,9 +30,8 @@ public class WishListServiceImpl implements WishListService {
 
 	@Override
 	public boolean checkIfProductAvailableInWishList(Long productId) {
-		Product product = productConfigService.getProductById(productId);
-		wishListRepository.checkIfProductAvailableInWishList(product);
-		return false;
+		Product product = productConfigService.getProductById(productId);		
+		return wishListRepository.checkIfProductAvailableInWishList(product);
 	}
 	
 	public void deleteProductFromWishList(Long productId) {

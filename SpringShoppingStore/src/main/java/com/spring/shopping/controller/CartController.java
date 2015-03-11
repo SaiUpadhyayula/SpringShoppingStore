@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.spring.shopping.service.CartService;
 import com.spring.shopping.service.ProductConfigService;
 import com.spring.shopping.service.WishListService;
+import com.spring.shopping.util.SessionUtils;
 
 @Controller
 public class CartController {
@@ -24,6 +25,7 @@ public class CartController {
 	private ProductConfigService productService;
 	@Autowired
 	private WishListService wishListService;
+	@SuppressWarnings("unused")
 	private HttpSession session;
 
 	/**
@@ -47,12 +49,13 @@ public class CartController {
 		} else {
 			cartService.addProduct(productId);
 		}
+		int numberOfItems = cartService.getNumberOfItems();
 		model.addAttribute("cart", cartService);
 		model.addAttribute("prodList", cartService.getProductsList());
-		int numberOfItems = cartService.getNumberOfItems();
 		model.addAttribute("numberOfItems", numberOfItems);
-		session = request.getSession();
-		session.setAttribute("cartTotal", cartService.getTotal());
+		session = SessionUtils.createSession(request);
+		SessionUtils.setSessionVariables(cartService.getTotal(), request,
+				"cartTotal");
 		return "redirect:/cart";
 	}
 
@@ -69,10 +72,9 @@ public class CartController {
 	 */
 	@RequestMapping(value = "/cart", method = RequestMethod.GET)
 	public ModelAndView viewCart(Model model, HttpServletRequest request) {
-		session = request.getSession();
-		session.setAttribute("cart", cartService);
-		session.setAttribute("prodList", cartService.getProductsList());
-
+		session = SessionUtils.createSession(request);
+		SessionUtils.setSessionVariables(cartService, request, "cart");
+		model.addAttribute("prodList", cartService.getProductsList());
 		int numberOfItems = cartService.getNumberOfItems();
 		model.addAttribute("numberOfItems", numberOfItems);
 		return new ModelAndView("cart");
@@ -88,8 +90,8 @@ public class CartController {
 	 * @param HttpServletRequest
 	 * @return Shopping Cart View
 	 */
-	
-	//TODO- Implement BindingResult and FormValidations
+
+	// TODO- Implement BindingResult and FormValidations
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public ModelAndView updateCart(Model model, HttpServletRequest request) {
 		Long productId = Long.parseLong(request.getParameter("productid"));
