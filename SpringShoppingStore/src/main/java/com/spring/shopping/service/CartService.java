@@ -99,4 +99,9 @@ public class CartService {
 		}
 		return amount;
 	}
+	
+	public boolean isCartEmpty(){
+		return productsMap.isEmpty();
+	}
+	
 }
