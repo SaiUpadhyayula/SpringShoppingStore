@@ -1,5 +1,7 @@
 package com.spring.shopping.repository;
 
+import java.math.BigInteger;
+
 import com.spring.shopping.model.Customer;
 
 public interface CustomerRepository {
@@ -11,4 +13,8 @@ public interface CustomerRepository {
 	public boolean changePassword(String password,Customer customer);
 
 	public Customer getCustomerById(Long customerId);
+
+	Long getCustomerById(String userName);
+
+	public void saveActivationDetails(Long customerId, long activationKey);
 }

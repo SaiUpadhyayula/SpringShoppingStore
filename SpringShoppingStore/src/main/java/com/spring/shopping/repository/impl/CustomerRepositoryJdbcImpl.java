@@ -1,5 +1,7 @@
 package com.spring.shopping.repository.impl;
 
+import java.math.BigInteger;
+
 import javax.sql.DataSource;
 
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -71,6 +73,26 @@ public class CustomerRepositoryJdbcImpl implements CustomerRepository {
 		Customer customer = namedParameterJdbcTemplate.queryForObject(sql,
 				sqlParameterSource, new CustomerMapper());
 		return customer;
+	}
+
+	@Override
+	public Long getCustomerById(String userName) {
+		String sql = "SELECT Customer_Id FROM eshopper.Customer c WHERE c.User_Name=:userName";
+		SqlParameterSource sqlParameterSource = new MapSqlParameterSource(
+				"userName", userName);
+		return namedParameterJdbcTemplate.queryForLong(sql, sqlParameterSource);
+
+	}
+
+	@Override
+	public void saveActivationDetails(Long customerId, long activationKey) {
+		String sql = "INSERT INTO eshopper.customeractivation (Activation_Key,Customer_Id) VALUES(:longActivationKey,:customerId)";
+		SqlParameterSource namedParameters = new MapSqlParameterSource();
+		((MapSqlParameterSource) namedParameters).addValue("customerId",
+				customerId);
+		((MapSqlParameterSource) namedParameters).addValue("longActivationKey",
+				activationKey);
+		namedParameterJdbcTemplate.update(sql, namedParameters);
 	}
 
 }

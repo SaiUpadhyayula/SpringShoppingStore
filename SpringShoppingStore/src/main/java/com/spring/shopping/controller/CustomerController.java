@@ -1,5 +1,7 @@
 package com.spring.shopping.controller;
 
+import java.math.BigInteger;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -15,6 +17,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.spring.shopping.model.Customer;
 import com.spring.shopping.service.CartService;
 import com.spring.shopping.service.CustomerService;
+import com.spring.shopping.service.MailSenderService;
+import com.spring.shopping.util.KeyGenerator;
 import com.spring.shopping.util.SessionUtils;
 
 @Controller
@@ -23,6 +27,9 @@ public class CustomerController {
 	private HttpSession session;
 	@Autowired
 	private CustomerService customerService;
+	@Autowired
+	private MailSenderService mailSenderService;
+	private StringBuffer sb = new StringBuffer();
 
 	/**
 	 * This method used to Validate the customer and login to the application
@@ -67,8 +74,12 @@ public class CustomerController {
 	}
 
 	/**
-	 * This method used to Register the Customer in Application
+	 * This method used to Register the Customer in Application On successfully
+	 * registration, a unique key will be generated and stored in the database.
 	 * 
+	 * An Activation email is sent to the customer's emailID and if the user
+	 * clicks on the link which contains the activation key, the customer will
+	 * be activated.
 	 * 
 	 * @param customer
 	 * @param model
@@ -85,6 +96,19 @@ public class CustomerController {
 			RedirectAttributes redir, HttpServletRequest request) {
 		if (validateCustomer(userName, password) == null) {
 			int result = customerService.registerUser(customer);
+			if (result > 0) {
+				Long customerId = customerService.getCustomerId(userName);
+				long activationKey = KeyGenerator.generateKey();
+				//BigInteger key = new BigInteger(activationKey.toString().replaceAll("-", ""), 16);
+				customerService.insertActivationDetails(customerId,
+						activationKey);
+				sb.append("Hello " + customer.getUserName() + "\n");
+				sb.append("Please Click the below link to activate your account.\n");
+				sb.append("http://localhost:8080/shopping/activate?key=");
+				sb.append(activationKey);
+				mailSenderService.sendRegistrationEmail(
+						customer.getEmailAddress(), userName, sb.toString());
+			}
 			redir.addFlashAttribute("result", result);
 		} else {
 			redir.addFlashAttribute("regStatus", "FAIL");

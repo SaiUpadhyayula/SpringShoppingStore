@@ -1,5 +1,7 @@
 package com.spring.shopping.service;
 
+import java.math.BigInteger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +34,16 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public Customer getCustomerById(Long customerId) {
 		return customerRepository.getCustomerById(customerId);
+	}
+
+	@Override
+	public Long getCustomerId(String userName) {
+		return customerRepository.getCustomerById(userName);
+	}
+
+	@Override
+	public void insertActivationDetails(Long customerId, long activationKey) {
+		customerRepository.saveActivationDetails(customerId,activationKey);
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.spring.shopping.repository.impl;
 
+import java.math.BigInteger;
+
 import com.spring.shopping.model.Customer;
 import com.spring.shopping.repository.CustomerRepository;
 
@@ -27,6 +29,18 @@ public class CustomerRepositoryHibernateImpl implements CustomerRepository {
 	public Customer getCustomerById(Long customerId) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Long getCustomerById(String userName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void saveActivationDetails(Long customerId, long activationKey) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
