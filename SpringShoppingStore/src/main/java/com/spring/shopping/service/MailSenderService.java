@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class MailSenderService {
 	
-	private final String FROM_ID = "info.demoproduct@gmail.com";
+	private final String FROM_ID = "info.demoproject@gmail.com";
 	@Autowired
 	private JavaMailSenderImpl javaMailSender;
 	

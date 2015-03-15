@@ -109,15 +109,13 @@
 		<beans:property name="emailId" value="UserName" />
 		<beans:property name="password" value="Password" />
 	</beans:bean>
-
+    
 	<beans:bean id="javaMailSender"
 		class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<beans:property name="host" value="smtp.gmail.com" />
-		<beans:property name="port" value="985" />
-		<beans:property name="username"
-			value="#{mailProps.getProperty('emailId')}" />
-		<beans:property name="password"
-			value="#{mailProps.getProperty('password')}" />
+		<beans:property name="port" value="995" />
+		<beans:property name="username" value="info.demoproject@gmail.com" />
+		<beans:property name="password" value="demoproject" />
 		<beans:property name="javaMailProperties">
 			<beans:props>
 				<beans:prop key="mail.smtp.ssl.trust">

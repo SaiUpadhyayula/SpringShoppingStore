@@ -86,6 +86,7 @@ public class CustomerRepositoryJdbcImpl implements CustomerRepository {
 
 	@Override
 	public void saveActivationDetails(Long customerId, long activationKey) {
+		activationKey = Long.parseLong(new String(new Long(activationKey).toString()).replaceFirst("-", ""));
 		String sql = "INSERT INTO eshopper.customeractivation (Activation_Key,Customer_Id) VALUES(:longActivationKey,:customerId)";
 		SqlParameterSource namedParameters = new MapSqlParameterSource();
 		((MapSqlParameterSource) namedParameters).addValue("customerId",
