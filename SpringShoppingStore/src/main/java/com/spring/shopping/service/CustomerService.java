@@ -15,4 +15,6 @@ public interface CustomerService {
 	public Long getCustomerId(String userName);
 
 	public void insertActivationDetails(Long customerId, long activationKey);
+
+	public Long getCustomerIDByKey(long key);
 }

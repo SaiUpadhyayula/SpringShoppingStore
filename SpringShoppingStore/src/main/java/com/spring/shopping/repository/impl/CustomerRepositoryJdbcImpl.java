@@ -1,7 +1,5 @@
 package com.spring.shopping.repository.impl;
 
-import java.math.BigInteger;
-
 import javax.sql.DataSource;
 
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -86,7 +84,8 @@ public class CustomerRepositoryJdbcImpl implements CustomerRepository {
 
 	@Override
 	public void saveActivationDetails(Long customerId, long activationKey) {
-		activationKey = Long.parseLong(new String(new Long(activationKey).toString()).replaceFirst("-", ""));
+		activationKey = Long.parseLong(new String(new Long(activationKey)
+				.toString()).replaceFirst("-", ""));
 		String sql = "INSERT INTO eshopper.customeractivation (Activation_Key,Customer_Id) VALUES(:longActivationKey,:customerId)";
 		SqlParameterSource namedParameters = new MapSqlParameterSource();
 		((MapSqlParameterSource) namedParameters).addValue("customerId",
@@ -94,6 +93,14 @@ public class CustomerRepositoryJdbcImpl implements CustomerRepository {
 		((MapSqlParameterSource) namedParameters).addValue("longActivationKey",
 				activationKey);
 		namedParameterJdbcTemplate.update(sql, namedParameters);
+	}
+
+	@Override
+	public Long getCustomerIDByKey(long key) {
+		String sql = "SELECT Customer_Id FROM eshopper.customeractivation ca where ca.Activation_Key = :key";
+		SqlParameterSource sqlParameterSource = new MapSqlParameterSource(
+				"key", key);
+		return namedParameterJdbcTemplate.queryForLong(sql, sqlParameterSource);
 	}
 
 }

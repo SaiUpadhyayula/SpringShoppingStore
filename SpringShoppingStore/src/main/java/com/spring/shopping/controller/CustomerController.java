@@ -153,5 +153,12 @@ public class CustomerController {
 		model.addAttribute("result", 0);
 		return "login";
 	}
+	
+	@RequestMapping(value = "/activate",method=RequestMethod.GET)
+	public String activateCustomer(@RequestParam("key")long key){		
+		Long customerId = customerService.getCustomerIDByKey(key);
+		Customer customer = customerService.getCustomerById(customerId);
+		return "login";
+	}
 
 }
