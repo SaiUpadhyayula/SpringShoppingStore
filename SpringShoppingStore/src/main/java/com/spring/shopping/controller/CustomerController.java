@@ -1,7 +1,5 @@
 package com.spring.shopping.controller;
 
-import java.math.BigInteger;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -158,7 +156,11 @@ public class CustomerController {
 	public String activateCustomer(@RequestParam("key")long key){		
 		Long customerId = customerService.getCustomerIDByKey(key);
 		Customer customer = customerService.getCustomerById(customerId);
-		return "login";
+		boolean flag = customerService.activateCustomer(customer);
+		if(flag)
+			return "login";
+		else
+			return "activation";
 	}
 
 }

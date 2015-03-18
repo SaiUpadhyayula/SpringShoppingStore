@@ -17,4 +17,6 @@ public interface CustomerService {
 	public void insertActivationDetails(Long customerId, long activationKey);
 
 	public Long getCustomerIDByKey(long key);
+
+	public boolean activateCustomer(Customer customer);
 }

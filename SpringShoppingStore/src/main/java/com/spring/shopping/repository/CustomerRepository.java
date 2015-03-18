@@ -1,7 +1,5 @@
 package com.spring.shopping.repository;
 
-import java.math.BigInteger;
-
 import com.spring.shopping.model.Customer;
 
 public interface CustomerRepository {
@@ -19,4 +17,6 @@ public interface CustomerRepository {
 	public void saveActivationDetails(Long customerId, long activationKey);
 
 	public Long getCustomerIDByKey(long key);
+
+	public boolean activateCustomer(Customer customer);
 }

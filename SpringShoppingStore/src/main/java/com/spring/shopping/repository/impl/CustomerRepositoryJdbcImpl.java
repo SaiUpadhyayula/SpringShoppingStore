@@ -97,10 +97,24 @@ public class CustomerRepositoryJdbcImpl implements CustomerRepository {
 
 	@Override
 	public Long getCustomerIDByKey(long key) {
-		String sql = "SELECT Customer_Id FROM eshopper.customeractivation ca where ca.Activation_Key = :key";
+		String sql = "SELECT Customer_Id FROM eshopper.customeractivation  ca where ca.Activation_Key = :key";
 		SqlParameterSource sqlParameterSource = new MapSqlParameterSource(
 				"key", key);
 		return namedParameterJdbcTemplate.queryForLong(sql, sqlParameterSource);
+	}
+
+	@Override
+	public boolean activateCustomer(Customer customer) {
+		String sql = "UPDATE eshopper.customer c SET c.Active = :status WHERE c.Customer_Id=:customerId";
+		SqlParameterSource namedParameters = new MapSqlParameterSource();
+		((MapSqlParameterSource)namedParameters).addValue("status", 1);
+		((MapSqlParameterSource)namedParameters).addValue("customerId", customer.getCustomerId());
+		int result = namedParameterJdbcTemplate.update(sql, namedParameters);
+		if (result > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }
