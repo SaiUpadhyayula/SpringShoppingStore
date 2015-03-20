@@ -31,7 +31,7 @@ public class CategoryConfigRepositoryJdbcImpl implements CategoryConfigRepositor
 
 	@Override
 	public List<Category> readAllCategories() {
-		String sql = "SELECT * FROM eshopper.category c;";
+		String sql = "SELECT * FROM category c;";
 		List<Category> categoryList = jdbcTemplate.query(sql,
 				new CategoryMapper());
 		return categoryList;
@@ -39,7 +39,7 @@ public class CategoryConfigRepositoryJdbcImpl implements CategoryConfigRepositor
 
 	@Override
 	public List<SubCategory> readAllSubCategories() {
-		String sql = "SELECT * FROM eshopper.category sc;";
+		String sql = "SELECT * FROM category sc;";
 		List<SubCategory> subCategoryList = jdbcTemplate.query(sql,
 				new SubCategoryMapper());
 		return subCategoryList;
@@ -91,7 +91,7 @@ public class CategoryConfigRepositoryJdbcImpl implements CategoryConfigRepositor
 
 	@Override
 	public List<SubCategory> readAllSubCategoriesByCategoryId(Long categoryId) {
-		String sql = "SELECT * FROM eshopper.subcategory s where s.Category_Id = :categoryId";
+		String sql = "SELECT * FROM subcategory s where s.Category_Id = :categoryId";
 		SqlParameterSource sqlParameterSource = new MapSqlParameterSource(
 				"categoryId", categoryId);
 		List<SubCategory> subCategoryList = namedParameterJdbcTemplate.query(
@@ -101,7 +101,7 @@ public class CategoryConfigRepositoryJdbcImpl implements CategoryConfigRepositor
 
 	@Override
 	public List<Product> getProductsByCategory(String categoryName) {
-		String sql = "SELECT * FROM eshopper.product p where p.Category_Id = (SELECT c.Category_Id FROM eshopper.category c where c.Name = :categoryName)";
+		String sql = "SELECT * FROM product p where p.Category_Id = (SELECT c.Category_Id FROM category c where c.Name = :categoryName)";
 		SqlParameterSource sqlParameterSource = new MapSqlParameterSource(
 				"categoryName", categoryName);
 		List<Product> productList = namedParameterJdbcTemplate.query(sql,
@@ -111,7 +111,7 @@ public class CategoryConfigRepositoryJdbcImpl implements CategoryConfigRepositor
 
 	@Override
 	public List<Product> getProductsBySubCategory(String subCategoryName) {
-		String sql = "SELECT * FROM eshopper.product p where p.SubCategory_Id = (SELECT sc.SubCategory_Id FROM eshopper.subcategory sc where sc.Name = :subCategoryName)";
+		String sql = "SELECT * FROM product p where p.SubCategory_Id = (SELECT sc.SubCategory_Id FROM subcategory sc where sc.Name = :subCategoryName)";
 		SqlParameterSource sqlParameterSource = new MapSqlParameterSource(
 				"subCategoryName", subCategoryName);
 		List<Product> subCatProdList = namedParameterJdbcTemplate.query(sql,

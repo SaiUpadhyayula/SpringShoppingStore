@@ -26,7 +26,7 @@ public class CustomerRepositoryJdbcImpl implements CustomerRepository {
 	@Override
 	public Customer validateUsers(String userName, String password) {
 		try {
-			String sql = "select * from eshopper.customer c where c.User_Name=:userName and c.Pass=:password";
+			String sql = "select * from customer c where c.User_Name=:userName and c.Pass=:password";
 			SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
 					.addValue("userName", userName).addValue("password",
 							password);
@@ -40,7 +40,7 @@ public class CustomerRepositoryJdbcImpl implements CustomerRepository {
 
 	@Override
 	public Integer registerUser(Customer customer) {
-		String sql = "INSERT INTO eshopper.customer (User_Name,Pass,Email_Address) VALUES(:userName,:password,:emailAddress)";
+		String sql = "INSERT INTO customer (User_Name,Pass,Email_Address) VALUES(:userName,:password,:emailAddress)";
 		SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(
 				customer);
 
@@ -49,7 +49,7 @@ public class CustomerRepositoryJdbcImpl implements CustomerRepository {
 
 	@Override
 	public boolean changePassword(String password, Customer customer) {
-		String sql = "UPDATE eshopper.customer c SET c.Pass=:password where c.Customer_Id=:customerId";
+		String sql = "UPDATE customer c SET c.Pass=:password where c.Customer_Id=:customerId";
 		SqlParameterSource namedParameters = new MapSqlParameterSource();
 		((MapSqlParameterSource) namedParameters)
 				.addValue("password", password);
@@ -65,7 +65,7 @@ public class CustomerRepositoryJdbcImpl implements CustomerRepository {
 
 	@Override
 	public Customer getCustomerById(Long customerId) {
-		String sql = "SELECT * FROM eshopper.Customer c WHERE c.Customer_Id=:customerId";
+		String sql = "SELECT * FROM Customer c WHERE c.Customer_Id=:customerId";
 		SqlParameterSource sqlParameterSource = new MapSqlParameterSource(
 				"customerId", customerId);
 		Customer customer = namedParameterJdbcTemplate.queryForObject(sql,
@@ -75,7 +75,7 @@ public class CustomerRepositoryJdbcImpl implements CustomerRepository {
 
 	@Override
 	public Long getCustomerById(String userName) {
-		String sql = "SELECT Customer_Id FROM eshopper.Customer c WHERE c.User_Name=:userName";
+		String sql = "SELECT Customer_Id FROM Customer c WHERE c.User_Name=:userName";
 		SqlParameterSource sqlParameterSource = new MapSqlParameterSource(
 				"userName", userName);
 		return namedParameterJdbcTemplate.queryForLong(sql, sqlParameterSource);

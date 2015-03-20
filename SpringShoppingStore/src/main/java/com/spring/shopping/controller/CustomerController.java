@@ -16,7 +16,6 @@ import com.spring.shopping.model.Customer;
 import com.spring.shopping.service.CartService;
 import com.spring.shopping.service.CustomerService;
 import com.spring.shopping.service.MailSenderService;
-import com.spring.shopping.util.KeyGenerator;
 import com.spring.shopping.util.SessionUtils;
 
 @Controller
@@ -97,8 +96,8 @@ public class CustomerController {
 			if (result > 0) {
 				sb.append("Hello " + customer.getUserName() + "\n");
 				sb.append("Thank you for registering at eShopper.Happy Shopping!!\n");
-				mailSenderService.sendRegistrationEmail(
-						customer.getEmailAddress(), userName, sb.toString());
+				mailSenderService.sendEmail(
+						customer.getEmailAddress(), userName, sb.toString(),"Activation mail for "+userName);
 			}
 			redir.addFlashAttribute("result", result);
 		} else {

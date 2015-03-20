@@ -26,7 +26,7 @@ public class ProductConfigRepositoryJdbcImpl implements ProductConfigRepository 
 	@Override
 	public List<Product> readFeaturedProducts() {
 		int number = 1;
-		String sql = "SELECT * FROM eshopper.product p where p.Featured= :number";
+		String sql = "SELECT * FROM product p where p.Featured= :number";
 		SqlParameterSource sqlParameterSource = new MapSqlParameterSource(
 				"number", number);
 		List<Product> productsList = namedParameterJdbcTemplate.query(sql,
@@ -36,7 +36,7 @@ public class ProductConfigRepositoryJdbcImpl implements ProductConfigRepository 
 
 	@Override
 	public Product readProductById(Long productId) {
-		String sql = "SELECT * FROM eshopper.product p where p.Product_Id= :productId";
+		String sql = "SELECT * FROM product p where p.Product_Id= :productId";
 		SqlParameterSource sqlParameterSource = new MapSqlParameterSource(
 				"productId", productId);
 		Product product = namedParameterJdbcTemplate.queryForObject(sql,

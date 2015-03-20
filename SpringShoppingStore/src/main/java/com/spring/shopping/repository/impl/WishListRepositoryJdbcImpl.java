@@ -26,7 +26,7 @@ public class WishListRepositoryJdbcImpl implements WishListRepository {
 
 	@Override
 	public boolean addProductToWishList(Product product, Customer customer) {
-		String sqlSelect = "SELECT COUNT(*) FROM eshopper.wishlistdetails w where w.Product_Id = :productId";
+		String sqlSelect = "SELECT COUNT(*) FROM wishlistdetails w where w.Product_Id = :productId";
 		SqlParameterSource sqlParameterSource1 = new MapSqlParameterSource(
 				"productId", product.getProductId());
 		int result = namedParameterJdbcTemplate.queryForInt(sqlSelect,
@@ -35,7 +35,7 @@ public class WishListRepositoryJdbcImpl implements WishListRepository {
 			WishList wishList = new WishList();
 			wishList.setCustomerId(customer.getCustomerId());
 			wishList.setProductId(product.getProductId());
-			String sql = "insert into eshopper.wishlistdetails(Product_Id,Customer_Id) values(:productId,:customerId)";
+			String sql = "insert into wishlistdetails(Product_Id,Customer_Id) values(:productId,:customerId)";
 			SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(
 					wishList);
 			namedParameterJdbcTemplate.update(sql, sqlParameterSource);
@@ -48,7 +48,7 @@ public class WishListRepositoryJdbcImpl implements WishListRepository {
 
 	@Override
 	public List<Product> readProductsInWishList(Customer customer) {
-		String sql = "Select * from eshopper.product p where p.product_Id IN (select w.Product_Id from eshopper.wishlistdetails w where w.Customer_Id = :customerId);";
+		String sql = "Select * from product p where p.product_Id IN (select w.Product_Id from wishlistdetails w where w.Customer_Id = :customerId);";
 		SqlParameterSource sqlParameterSource = new MapSqlParameterSource(
 				"customerId", customer.getCustomerId());
 		List<Product> productsList = namedParameterJdbcTemplate.query(sql,
@@ -58,13 +58,13 @@ public class WishListRepositoryJdbcImpl implements WishListRepository {
 
 	@Override
 	public boolean checkIfProductAvailableInWishList(Product product) {
-		String sqlSelect = "SELECT COUNT(*) FROM eshopper.wishlistdetails w where w.Product_Id = :productId";
+		String sqlSelect = "SELECT COUNT(*) FROM wishlistdetails w where w.Product_Id = :productId";
 		SqlParameterSource sqlParameterSource1 = new MapSqlParameterSource(
 				"productId", product.getProductId());
 		int result = namedParameterJdbcTemplate.queryForInt(sqlSelect,
 				sqlParameterSource1);
 		if (result == 1) {
-			String sql = "DELETE FROM eshopper.wishlistdetails where Product_Id=:productId";
+			String sql = "DELETE FROM wishlistdetails where Product_Id=:productId";
 			SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(
 					product);
 			namedParameterJdbcTemplate.update(sql, sqlParameterSource);
@@ -76,7 +76,7 @@ public class WishListRepositoryJdbcImpl implements WishListRepository {
 
 	@Override
 	public void deleteProductFromWishList(Product product) {
-		String sql = "DELETE FROM eshopper.wishlistdetails where Product_Id=:productId";
+		String sql = "DELETE FROM wishlistdetails where Product_Id=:productId";
 		SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(
 				product);
 		namedParameterJdbcTemplate.update(sql, sqlParameterSource);

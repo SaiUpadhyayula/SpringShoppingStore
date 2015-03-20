@@ -42,7 +42,7 @@ public class OrderRepositoryJdbcImpl implements OrderRepository {
 			AddressForm address) {
 		Order order1 = order;
 		order1.setAddressId(address.getAddressId());
-		String sql = "insert into eshopper.orders (Order_Id,CreatedDate,Email_Address,Order_Status,Order_SubTotal,Customer_Id,Address_Id) values (:orderId,:createdDate,:emailAddress,:orderStatus,:orderTotal,:customerId,:addressId)";
+		String sql = "insert into orders (Order_Id,CreatedDate,Email_Address,Order_Status,Order_SubTotal,Customer_Id,Address_Id) values (:orderId,:createdDate,:emailAddress,:orderStatus,:orderTotal,:customerId,:addressId)";
 		SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(
 				order1);
 		namedParameterJdbcTemplate.update(sql, sqlParameterSource);
@@ -56,7 +56,7 @@ public class OrderRepositoryJdbcImpl implements OrderRepository {
 					.getCategoryByProductId(product);
 			final Long subCategoryId = categoryConfigService
 					.getSubCategoryByProductId(product);
-			String orderItemsSql = "insert into eshopper.orderitem (Name,Price,Quantity,Category_Id,SubCategory_Id,Order_Id,Product_Id) values (?,?,?,?,?,?,?)";
+			String orderItemsSql = "insert into orderitem (Name,Price,Quantity,Category_Id,SubCategory_Id,Order_Id,Product_Id) values (?,?,?,?,?,?,?)";
 
 			Object[] args = new Object[] { name, price, quantity, categoryId,
 					subCategoryId, order.getOrderId(), product.getProductId() };
@@ -67,7 +67,7 @@ public class OrderRepositoryJdbcImpl implements OrderRepository {
 
 	@Override
 	public List<Product> readAllOrderItems(Order order) {
-		String sql = "SELECT * FROM eshopper.product p where p.Product_Id IN (SELECT oi.Product_Id FROM eshopper.orderitem oi where oi.Order_Id = :orderId)";
+		String sql = "SELECT * FROM product p where p.Product_Id IN (SELECT oi.Product_Id FROM orderitem oi where oi.Order_Id = :orderId)";
 		SqlParameterSource sqlParameterSource = new MapSqlParameterSource(
 				"orderId", order.getOrderId());
 		List<Product> productList = namedParameterJdbcTemplate.query(sql,
@@ -77,7 +77,7 @@ public class OrderRepositoryJdbcImpl implements OrderRepository {
 
 	@Override
 	public List<Order> readAllOrdersForCustomer(Customer customer) {
-		String sql = "SELECT * FROM eshopper.orders o where o.Customer_Id=:customerId";
+		String sql = "SELECT * FROM orders o where o.Customer_Id=:customerId";
 		SqlParameterSource sqlParameterSource = new MapSqlParameterSource(
 				"customerId", customer.getCustomerId());
 		List<Order> ordersList = namedParameterJdbcTemplate.query(sql,
@@ -87,7 +87,7 @@ public class OrderRepositoryJdbcImpl implements OrderRepository {
 
 	@Override
 	public Order readOrderById(Long orderId) {
-		String sql = "SELECT * FROM eshopper.orders o where o.Order_Id=:orderId";
+		String sql = "SELECT * FROM orders o where o.Order_Id=:orderId";
 		SqlParameterSource sqlParameterSource = new MapSqlParameterSource("orderId", orderId);
 		return namedParameterJdbcTemplate.queryForObject(sql, sqlParameterSource, new OrderMapper());
 		

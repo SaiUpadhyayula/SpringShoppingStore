@@ -27,7 +27,7 @@ public class ReviewRepositoryJdbcImpl implements ReviewRepository {
 
 	@Override
 	public void reviewProduct(ReviewForm reviewForm) {
-		String sql = "insert into eshopper.review(Customer_Id,ReviewText,SubmittedDate,Product_Id,ReviewTitle,Rating) values (:customerId,:reviewText,:date,:productId,:reviewTitle,:rating)";
+		String sql = "insert into review(Customer_Id,ReviewText,SubmittedDate,Product_Id,ReviewTitle,Rating) values (:customerId,:reviewText,:date,:productId,:reviewTitle,:rating)";
 		SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(
 				reviewForm);
 		namedParameterJdbcTemplate.update(sql, sqlParameterSource);
@@ -35,7 +35,7 @@ public class ReviewRepositoryJdbcImpl implements ReviewRepository {
 
 	@Override
 	public List<ReviewForm> getProductReviews(Long productId) {
-		String sql = "SELECT * FROM eshopper.review r where r.Product_Id=:productId";
+		String sql = "SELECT * FROM review r where r.Product_Id=:productId";
 		SqlParameterSource sqlParameterSource1 = new MapSqlParameterSource(
 				"productId", productId);
 		List<ReviewForm> reviewsList = namedParameterJdbcTemplate.query(sql,
@@ -45,7 +45,7 @@ public class ReviewRepositoryJdbcImpl implements ReviewRepository {
 
 	@Override
 	public List<ReviewForm> getReviewByCustomer(Customer customer) {
-		String sql = "SELECT * FROM eshopper.review r where r.Customer_Id=:customerId";
+		String sql = "SELECT * FROM review r where r.Customer_Id=:customerId";
 		SqlParameterSource sqlParameterSource = new MapSqlParameterSource(
 				"customerId", customer.getCustomerId());
 		List<ReviewForm> reviewsList = namedParameterJdbcTemplate.query(sql,

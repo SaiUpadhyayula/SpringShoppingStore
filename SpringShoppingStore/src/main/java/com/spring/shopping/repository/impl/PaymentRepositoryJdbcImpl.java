@@ -22,7 +22,7 @@ public class PaymentRepositoryJdbcImpl implements PaymentRepository {
 
 	@Override
 	public void payByCreditCard(CreditCardForm creditCardForm) {
-		String sql = "insert into eshopper.payment (CC_Number,CC_Name,CC_CVV,CC_Expiry_Month,CC_Expiry_Year,Customer_Id) values (:creditCardNumber,:name,:cvvCode,:month,:year,:customerId)";
+		String sql = "insert into payment (CC_Number,CC_Name,CC_CVV,CC_Expiry_Month,CC_Expiry_Year,Customer_Id) values (:creditCardNumber,:name,:cvvCode,:month,:year,:customerId)";
 		SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(
 				creditCardForm);
 		namedParameterJdbcTemplate.update(sql, sqlParameterSource);

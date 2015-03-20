@@ -21,6 +21,7 @@ import com.spring.shopping.model.Customer;
 import com.spring.shopping.model.Order;
 import com.spring.shopping.model.Product;
 import com.spring.shopping.service.CartService;
+import com.spring.shopping.service.MailSenderService;
 import com.spring.shopping.service.OrderService;
 import com.spring.shopping.service.PaymentService;
 import com.spring.shopping.service.ProductConfigService;
@@ -37,6 +38,9 @@ public class OrderController {
 	private CartService cartService;
 	@Autowired
 	private ProductConfigService productConfigService;
+	@Autowired
+	private MailSenderService mailSenderService;
+	@SuppressWarnings("unused")
 	private HttpSession session;
 
 	@RequestMapping(value = "/createOrderByCC", method = RequestMethod.POST)
@@ -58,7 +62,22 @@ public class OrderController {
 
 		orderService.createOrder(order, cartService, customer, address);
 		payAmountByCreditCard(creditCardForm, request);
-		session.setAttribute("orderDetails", order);
+
+		SessionUtils.setSessionVariables(order, request, "orderDetails");
+		List<Product> productsList = orderService.getAllOrderItems(order);
+		StringBuffer sb = new StringBuffer();
+		sb.append("Hello " + customer.getUserName() + "\n");
+		sb.append("Thank you for shopping at eShopper.Happy Shopping!!\n");
+		sb.append("OrderId-" + order.getOrderId() + "/n");
+		sb.append("Products-/n");
+		for (Product p : productsList) {
+			sb.append(p.getName() + "  Rs." + p.getPrice() + "\n");
+		}
+		sb.append("Your Order Status is: " + order.getOrderStatus());
+		sb.append("You will get further notification.Once your order is processed");
+		mailSenderService.sendEmail(customer.getEmailAddress(),
+				customer.getUserName(), sb.toString(),
+				"Order Confirmation for " + customer.getUserName());
 		return "redirect:order";
 	}
 

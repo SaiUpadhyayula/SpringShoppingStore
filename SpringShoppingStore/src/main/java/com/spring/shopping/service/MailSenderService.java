@@ -16,11 +16,11 @@ public class MailSenderService {
 		this.javaMailSender = javaMailSender;
 	}
 	
-	public void sendRegistrationEmail(String emailId,String userName,String text){
+	public void sendEmail(String emailId,String userName,String text,String subject){
 		SimpleMailMessage simpleMailMessage  = new SimpleMailMessage();
 		simpleMailMessage.setFrom(FROM_ID);
 		simpleMailMessage.setTo(emailId);
-		simpleMailMessage.setSubject("Activation Mail for "+userName);
+		simpleMailMessage.setSubject(subject);
 		simpleMailMessage.setText(text);
 		System.out.println(javaMailSender.getUsername());
 		System.out.println(javaMailSender.getPassword());

@@ -23,7 +23,7 @@ public class AddressRepositoryJdbcImpl implements AddressRepository {
 
 	@Override
 	public void saveAddress(AddressForm address) {
-		String sql = "insert into eshopper.address (Address_Id,Address_1, Address_2,City,Zip,State,FullName) "
+		String sql = "insert into address (Address_Id,Address_1, Address_2,City,Zip,State,FullName) "
 				+ "VALUES(:addressId,:address1,:address2,:city,:zipCode,:state,:fullName)";
 
 		SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(
@@ -33,7 +33,7 @@ public class AddressRepositoryJdbcImpl implements AddressRepository {
 
 	@Override
 	public AddressForm readAddressById(Long addressId) {
-		String sql = "SELECT * FROM eshopper.address a where a.Address_Id=:addressId";
+		String sql = "SELECT * FROM address a where a.Address_Id=:addressId";
 		SqlParameterSource sqlParameterSource = new MapSqlParameterSource(
 				"addressId", addressId);
 		return namedParameterJdbcTemplate.queryForObject(sql,
