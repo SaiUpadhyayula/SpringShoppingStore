@@ -39,14 +39,4 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerRepository.getCustomerById(userName);
 	}
 
-	@Override
-	public void insertActivationDetails(Long customerId, long activationKey) {
-		customerRepository.saveActivationDetails(customerId,activationKey);
-	}
-
-	@Override
-	public Long getCustomerIDByKey(long key) {		
-		return customerRepository.getCustomerIDByKey(key);
-	}
-
 }

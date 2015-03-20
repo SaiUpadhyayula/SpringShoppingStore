@@ -13,8 +13,4 @@ public interface CustomerRepository {
 	public Customer getCustomerById(Long customerId);
 
 	Long getCustomerById(String userName);
-
-	public void saveActivationDetails(Long customerId, long activationKey);
-
-	public Long getCustomerIDByKey(long key);
 }

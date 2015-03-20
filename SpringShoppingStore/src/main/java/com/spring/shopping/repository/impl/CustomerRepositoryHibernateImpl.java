@@ -34,17 +34,4 @@ public class CustomerRepositoryHibernateImpl implements CustomerRepository {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public void saveActivationDetails(Long customerId, long activationKey) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Long getCustomerIDByKey(long key) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
