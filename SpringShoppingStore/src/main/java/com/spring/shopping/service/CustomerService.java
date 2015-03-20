@@ -18,5 +18,4 @@ public interface CustomerService {
 
 	public Long getCustomerIDByKey(long key);
 
-	public boolean activateCustomer(Customer customer);
 }

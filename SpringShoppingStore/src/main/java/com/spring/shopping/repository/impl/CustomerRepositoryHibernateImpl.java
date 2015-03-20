@@ -47,11 +47,4 @@ public class CustomerRepositoryHibernateImpl implements CustomerRepository {
 		return null;
 	}
 
-	@Override
-	public boolean activateCustomer(Customer customer) {
-		return false;
-		// TODO Auto-generated method stub
-		
-	}
-
 }

@@ -49,10 +49,4 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerRepository.getCustomerIDByKey(key);
 	}
 
-	@Override
-	public boolean activateCustomer(Customer customer) {
-		return customerRepository.activateCustomer(customer);
-		
-	}
-
 }

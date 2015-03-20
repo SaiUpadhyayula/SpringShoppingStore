@@ -17,6 +17,4 @@ public interface CustomerRepository {
 	public void saveActivationDetails(Long customerId, long activationKey);
 
 	public Long getCustomerIDByKey(long key);
-
-	public boolean activateCustomer(Customer customer);
 }
