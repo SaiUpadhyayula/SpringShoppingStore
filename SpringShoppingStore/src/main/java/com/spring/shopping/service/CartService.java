@@ -32,7 +32,7 @@ public class CartService {
 	}
 
 	// Add Products to Shopping Cart
-	public void addProduct(Long productId) {
+	public synchronized void addProduct(Long productId) {
 		OrderItem orderItem = productsMap.get(productId);
 		Product product = productConfigService.getProductById(productId);
 		if (orderItem == null) {
@@ -43,34 +43,35 @@ public class CartService {
 		}
 		orderItem.incrementQuantity();
 	}
-	public void updateProduct(Long productId, int quantity) {
+
+	public synchronized void updateProduct(Long productId, int quantity) {
 		OrderItem orderItem = productsMap.get(productId);
 		orderItem.setQuantity(quantity);
 	}
 
-	public Map<Long, OrderItem> getProductsList() {
+	public synchronized Map<Long, OrderItem> getProductsList() {
 		return productsMap;
 	}
 
-	public int getProductsCount() {
+	public synchronized int getProductsCount() {
 		return productsMap.size();
 	}
 
-	public boolean containsProduct(Long productId) {
+	public synchronized boolean containsProduct(Long productId) {
 		return productsMap.containsKey(productId);
 	}
 
-	public void incrementProductQuantity(Long productId) {
+	public synchronized void incrementProductQuantity(Long productId) {
 		OrderItem orderItem = productsMap.get(productId);
 		orderItem.incrementQuantity();
 	}
 
-	public void decrementProductQuantity(Long productId) {
+	public synchronized void decrementProductQuantity(Long productId) {
 		OrderItem orderItem = productsMap.get(productId);
 		orderItem.decrementQuantity();
 	}
 
-	public int getNumberOfItems() {
+	public synchronized int getNumberOfItems() {
 		numberOfItems = 0;
 		List<OrderItem> itemsList = new ArrayList<OrderItem>();
 		itemsList.addAll(productsMap.values());
@@ -81,17 +82,17 @@ public class CartService {
 		return numberOfItems;
 	}
 
-	public void removeProduct(Long productId) {
+	public synchronized void removeProduct(Long productId) {
 		decrementProductQuantity(productId);
 		productsMap.remove(productId);
 	}
 
-	public void clearCart() {
+	public synchronized void clearCart() {
 		productsMap.clear();
 		numberOfItems = 0;
 	}
 
-	public double getTotal() {
+	public synchronized double getTotal() {
 		double amount = 0.0;
 		Map<Long, OrderItem> cartProducts = getProductsList();
 		for (OrderItem item : cartProducts.values()) {
@@ -99,9 +100,9 @@ public class CartService {
 		}
 		return amount;
 	}
-	
-	public boolean isCartEmpty(){
+
+	public synchronized boolean isCartEmpty() {
 		return productsMap.isEmpty();
 	}
-	
+
 }

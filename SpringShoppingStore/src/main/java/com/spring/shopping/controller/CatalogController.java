@@ -23,6 +23,7 @@ import com.spring.shopping.model.SubCategory;
 import com.spring.shopping.service.CartService;
 import com.spring.shopping.service.CategoryConfigService;
 import com.spring.shopping.service.ProductConfigService;
+import com.spring.shopping.util.SessionUtils;
 
 /**
  * @author Sai Upadhyayula Handles requests for the application home page.
@@ -53,7 +54,7 @@ public class CatalogController {
 	 * @return Home Page View
 	 */
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public String returnHomePage(Model model) {
+	public String returnHomePage(Model model,HttpServletRequest request) {
 		Map<Category, List<SubCategory>> categoryMap = new HashMap<Category, List<SubCategory>>();
 		logger.info("Processing information for home page");
 		if (categoryMap.isEmpty()) {
@@ -68,7 +69,7 @@ public class CatalogController {
 					productConfigurationService.getFeaturedProducts());
 		}
 		int numberOfItems = cartService.getNumberOfItems();
-		model.addAttribute("numberOfItems", numberOfItems);
+		SessionUtils.setSessionVariables(numberOfItems, request, "numberOfItems");
 		return "home";
 	}
 

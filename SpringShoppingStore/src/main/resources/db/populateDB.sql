@@ -1,13 +1,31 @@
-INSERT INTO `category` (`Category_Id`,`Name`) VALUES 
+INSERT IGNORE INTO `category` (`Category_Id`,`Name`) VALUES 
  (1000125,'Mobiles'),
  (1000126,'Books'),
  (1000127,'Movies'),
  (1000128,'Games');
  
- INSERT INTO `emaildetails` (`UserName`,`Password`) VALUES 
+ INSERT IGNORE INTO `emaildetails` (`UserName`,`Password`) VALUES 
  ('info.demoproject','demoproject');
  
- INSERT INTO `product` (`Product_Id`,`Name`,`Featured`,`Price`,`Available`,`Category_Id`,`Description`,`SubCategory_Id`,`Manufacturer`) VALUES 
+ INSERT IGNORE INTO `subcategory` (`SubCategory_Id`,`Category_Id`,`Name`) VALUES 
+ (1000100,1000125,'Apple'),
+ (1000101,1000125,'Motorola'),
+ (1000102,1000126,'Novels'),
+ (1000103,1000126,'Literature'),
+ (1000104,1000126,'Academics'),
+ (1000105,1000126,'Biography'),
+ (1000106,1000125,'Blackberry'),
+ (1000107,1000127,'Action'),
+ (1000108,1000127,'Comedy'),
+ (1000109,1000127,'Thriller'),
+ (1000110,1000127,'Sci-Fi'),
+ (1000111,1000128,'Arcade'),
+ (1000112,1000128,'Sports'),
+ (1000113,1000128,'RPG'),
+ (1000114,1000128,'Adventure'),
+ (1000115,1000125,'Sony');
+ 
+ INSERT IGNORE INTO `product` (`Product_Id`,`Name`,`Featured`,`Price`,`Available`,`Category_Id`,`Description`,`SubCategory_Id`,`Manufacturer`) VALUES 
  (100,'iPhone 6 16GB',1,'40000',1,1000125,0x6950686F6E6520362031364742,1000100,'Apple'),
  (101,'iPhone 6 32GB',1,'40000',1,1000125,0x6950686F6E6520362033324742,1000100,'Apple'),
  (102,'iPhone 6 64GB',1,'50000',1,1000125,0x6950686F6E6520362036344742,1000100,'Apple'),
@@ -34,20 +52,4 @@ INSERT INTO `category` (`Category_Id`,`Name`) VALUES
  (123,'Immortals of Meluha - Oath of Vayuputras',1,'135',1,1000126,0x496D6D6F7274616C73206F66204D656C756861202D204F617468206F662056617975707574726173,1000101,'Meluha'),
  (124,'World of Warcraft - Rise of the Horde',1,'450',1,1000126,0x576F726C64206F66205761726372616674,1000101,'Warcraft');
  
- INSERT INTO `subcategory` (`SubCategory_Id`,`Category_Id`,`Name`) VALUES 
- (1000100,1000125,'Apple'),
- (1000101,1000125,'Motorola'),
- (1000102,1000126,'Novels'),
- (1000103,1000126,'Literature'),
- (1000104,1000126,'Academics'),
- (1000105,1000126,'Biography'),
- (1000106,1000125,'Blackberry'),
- (1000107,1000127,'Action'),
- (1000108,1000127,'Comedy'),
- (1000109,1000127,'Thriller'),
- (1000110,1000127,'Sci-Fi'),
- (1000111,1000128,'Arcade'),
- (1000112,1000128,'Sports'),
- (1000113,1000128,'RPG'),
- (1000114,1000128,'Adventure'),
- (1000115,1000125,'Sony');
+ 
