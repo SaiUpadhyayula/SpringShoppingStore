@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.spring.shopping.controller.constants.ControllerConstants;
 import com.spring.shopping.model.Customer;
 import com.spring.shopping.model.Product;
 import com.spring.shopping.model.ReviewForm;
@@ -38,8 +38,6 @@ public class ProductController {
 	private ReviewService reviewService;
 	@Autowired
 	private CustomerService customerService;
-	@SuppressWarnings("unused")
-	private HttpSession session;
 
 	/**
 	 * Product Controller method which retrieves the information required in the
@@ -58,10 +56,14 @@ public class ProductController {
 			HttpServletRequest request) throws ParseException {
 		Product product = productConfigurationService.getProductById(productId);
 		model.addAttribute("product", product);
-		int numberOfItems = cartService.getNumberOfItems();
-		model.addAttribute("numberOfItems", numberOfItems);
-		session = SessionUtils.createSession(request);
-		Customer customer = SessionUtils.getSessionVariables(request, "customer");
+
+		int numberOfItems = SessionUtils.getSessionVariables(request,
+				ControllerConstants.CART);
+		model.addAttribute(ControllerConstants.NUMBER_OF_ITEMS, numberOfItems);
+
+		Customer customer = SessionUtils.getSessionVariables(request,
+				ControllerConstants.CUSTOMER);
+		// Retrieve Reviews of a particular product
 		Map<Customer, ReviewForm> reviewMap = new HashMap<Customer, ReviewForm>();
 		if (customer != null) {
 			List<ReviewForm> reviewsList = reviewService

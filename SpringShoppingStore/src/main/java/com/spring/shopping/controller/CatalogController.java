@@ -2,8 +2,11 @@ package com.spring.shopping.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -17,9 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.spring.shopping.controller.constants.ControllerConstants;
 import com.spring.shopping.model.Category;
 import com.spring.shopping.model.Product;
 import com.spring.shopping.model.SubCategory;
+import com.spring.shopping.service.CartData;
 import com.spring.shopping.service.CartService;
 import com.spring.shopping.service.CategoryConfigService;
 import com.spring.shopping.service.ProductConfigService;
@@ -39,14 +44,21 @@ public class CatalogController {
 	private ServletContext context;
 	@Autowired
 	private CartService cartService;
-	private String accountsPage = "template/accountInformation";
+
+	private String accountsTemplatePage = "template/accountInformation";
+
+	private String homePage = "home";
+
+	private String categoryPage = "category";
+
+	private String accountsPage = "account";
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(CatalogController.class);
 
 	/**
 	 * Catalog Controller method which retrieves the information required in the
-	 * application home page(Categories,SubCategories)
+	 * application home page(Categories,SubCategories,Featured Items)
 	 * 
 	 * @author Sai Upadhyayula
 	 * 
@@ -54,7 +66,7 @@ public class CatalogController {
 	 * @return Home Page View
 	 */
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public String returnHomePage(Model model,HttpServletRequest request) {
+	public String returnHomePage(Model model, HttpServletRequest request) {
 		Map<Category, List<SubCategory>> categoryMap = new HashMap<Category, List<SubCategory>>();
 		logger.info("Processing information for home page");
 		if (categoryMap.isEmpty()) {
@@ -68,9 +80,20 @@ public class CatalogController {
 			model.addAttribute("featProd",
 					productConfigurationService.getFeaturedProducts());
 		}
-		int numberOfItems = cartService.getNumberOfItems();
-		SessionUtils.setSessionVariables(numberOfItems, request, "numberOfItems");
-		return "home";
+		ConcurrentHashMap<Object,CartData> customerCart = SessionUtils.getSessionVariables(request,
+				ControllerConstants.CART);
+		Set<Object> customerSet = customerCart.keySet();
+		Iterator<Object> i = customerSet.iterator();
+		Object customerDetails = null;
+		while(i.hasNext()){
+			customerDetails = i.next();
+		}
+		CartData cart = null;
+		if(customerDetails != null)
+			cart = customerCart.get(customerDetails);
+		model.addAttribute(ControllerConstants.NUMBER_OF_ITEMS, cart.getNumberOfItems());
+		
+		return getHomePage();
 	}
 
 	@RequestMapping(value = "/cateogry", method = RequestMethod.GET)
@@ -80,7 +103,7 @@ public class CatalogController {
 		List<Product> categoryProducts = categoryConfigurationService
 				.getProductsByCategory(categoryName);
 		model.addAttribute("catProds", categoryProducts);
-		return "category";
+		return getCategoryPage();
 	}
 
 	@RequestMapping(value = "/subcateogry", method = RequestMethod.GET)
@@ -90,12 +113,24 @@ public class CatalogController {
 		List<Product> subCategoryProducts = categoryConfigurationService
 				.getProductsBySubCategory(subCategoryName);
 		model.addAttribute("subCatProds", subCategoryProducts);
-		return "category";
+		return getCategoryPage();
 	}
 
 	@RequestMapping(value = "/account", method = RequestMethod.GET)
-	public String getAccountsPage(Model model,HttpServletRequest request) {
-		model.addAttribute("page", accountsPage);
-		return "account";
+	public String getAccountsPage(Model model, HttpServletRequest request) {
+		model.addAttribute("page", accountsTemplatePage);
+		return getAccountPage();
+	}
+
+	public String getAccountPage() {
+		return accountsPage;
+	}
+
+	public String getCategoryPage() {
+		return categoryPage;
+	}
+
+	public String getHomePage() {
+		return homePage;
 	}
 }

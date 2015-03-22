@@ -1,13 +1,11 @@
 package com.spring.shopping.service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.spring.shopping.model.Customer;
 import com.spring.shopping.model.OrderItem;
 import com.spring.shopping.model.Product;
 
@@ -23,34 +21,31 @@ public class CartService {
 	 */
 	// Map to store ProductId and Integer
 	private Map<Long, OrderItem> productsMap;
-	private int numberOfItems;
 	@Autowired
 	private ProductConfigService productConfigService;
-
-	public CartService() {
-		productsMap = new ConcurrentHashMap<Long, OrderItem>();
-	}
+	@Autowired
+	private CartData cartData;
 
 	// Add Products to Shopping Cart
 	public synchronized void addProduct(Long productId) {
-		OrderItem orderItem = productsMap.get(productId);
-		Product product = productConfigService.getProductById(productId);
-		if (orderItem == null) {
-			orderItem = new OrderItem();
-			orderItem.setProduct(product);
-			orderItem.setQuantity(0);
-			productsMap.put(productId, orderItem);
+		if (!cartData.contains(productId)) {
+			cartData.incrementProductQuantity(productId);
+		} else {
+			OrderItem orderItem = productsMap.get(productId);
+			Product product = productConfigService.getProductById(productId);
+			if (orderItem == null) {
+				orderItem = new OrderItem();
+				orderItem.setProduct(product);
+				orderItem.setQuantity(0);
+				cartData.add(productId, orderItem);
+				orderItem.incrementQuantity();
+			}
 		}
-		orderItem.incrementQuantity();
 	}
 
 	public synchronized void updateProduct(Long productId, int quantity) {
 		OrderItem orderItem = productsMap.get(productId);
 		orderItem.setQuantity(quantity);
-	}
-
-	public synchronized Map<Long, OrderItem> getProductsList() {
-		return productsMap;
 	}
 
 	public synchronized int getProductsCount() {
@@ -67,42 +62,52 @@ public class CartService {
 	}
 
 	public synchronized void decrementProductQuantity(Long productId) {
-		OrderItem orderItem = productsMap.get(productId);
-		orderItem.decrementQuantity();
+		cartData.decrementProductQuantity(productId);
 	}
 
 	public synchronized int getNumberOfItems() {
-		numberOfItems = 0;
-		List<OrderItem> itemsList = new ArrayList<OrderItem>();
-		itemsList.addAll(productsMap.values());
-		for (OrderItem item : itemsList) {
-			numberOfItems += item.getQuantity();
-		}
-
-		return numberOfItems;
+		return cartData.getNumberOfItems();
 	}
 
 	public synchronized void removeProduct(Long productId) {
-		decrementProductQuantity(productId);
-		productsMap.remove(productId);
+		cartData.removeProduct(productId);
 	}
 
 	public synchronized void clearCart() {
-		productsMap.clear();
-		numberOfItems = 0;
+		cartData.clearCart();
+	}
+
+	public synchronized Map<Long, OrderItem> getProductsList() {
+		return cartData.getProductsList();
 	}
 
 	public synchronized double getTotal() {
-		double amount = 0.0;
-		Map<Long, OrderItem> cartProducts = getProductsList();
-		for (OrderItem item : cartProducts.values()) {
-			amount = amount + (item.getTotal()).doubleValue();
-		}
-		return amount;
+		return cartData.getTotal();
 	}
 
 	public synchronized boolean isCartEmpty() {
-		return productsMap.isEmpty();
+		return cartData.isCartEmpty();
+	}
+
+	public CartData getShoppingCart() {
+		return cartData;
+	}
+
+	public void setShoppingCart(CartData cartData) {
+		this.cartData = cartData;
+	}
+
+	public CartData getShoppingCartByCustomer(Customer customer) {
+		return null;
+	}
+
+	public void saveShoppingCartDetails(CartData customerCartData,
+			Customer customer) {
+
+	}
+
+	public void saveCartInDatabase(CartData cart, Customer customer) {
+
 	}
 
 }

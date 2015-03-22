@@ -52,6 +52,9 @@
 	<beans:bean id="reviewService"
 		class="com.spring.shopping.service.ReviewServiceImpl" />
 
+	<beans:bean id="cartData"
+		class="com.spring.shopping.service.CartData" />
+		
 	<beans:bean id="mailSenderService"
 		class="com.spring.shopping.service.MailSenderService" />
 
