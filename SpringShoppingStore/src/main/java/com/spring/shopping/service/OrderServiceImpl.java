@@ -44,7 +44,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setOrderTotal(new BigDecimal(cartService.getTotal()));
 		order.setCustomerId(customer.getCustomerId());
 		List<OrderItem> orderItemsList = new ArrayList<OrderItem>();
-		for (OrderItem orderItem : cartService.getProductsList().values()) {
+		for (OrderItem orderItem : cartService.getOrderItemsList()) {
 			orderItemsList.add(orderItem);
 		}
 		orderRepository.createOrder(order, orderItemsList, address);

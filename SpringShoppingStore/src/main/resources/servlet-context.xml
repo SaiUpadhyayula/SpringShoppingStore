@@ -46,15 +46,16 @@
 	<beans:bean id="orderService"
 		class="com.spring.shopping.service.OrderServiceImpl" />
 
+	<beans:bean id="cartHelperBean" class="com.spring.shopping.model.CartHelperBean" />
+
 	<beans:bean id="wishListService"
 		class="com.spring.shopping.service.WishListServiceImpl" />
 
 	<beans:bean id="reviewService"
 		class="com.spring.shopping.service.ReviewServiceImpl" />
 
-	<beans:bean id="cartData"
-		class="com.spring.shopping.service.CartData" />
-		
+	<beans:bean id="cartData" class="com.spring.shopping.service.CartData" />
+
 	<beans:bean id="mailSenderService"
 		class="com.spring.shopping.service.MailSenderService" />
 
@@ -112,7 +113,7 @@
 		<beans:property name="emailId" value="UserName" />
 		<beans:property name="password" value="Password" />
 	</beans:bean>
-    
+
 	<beans:bean id="javaMailSender"
 		class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<beans:property name="host" value="smtp.gmail.com" />

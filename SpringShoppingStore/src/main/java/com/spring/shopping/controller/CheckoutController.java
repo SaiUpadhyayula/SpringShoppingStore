@@ -39,9 +39,9 @@ public class CheckoutController {
 		Customer customer = (Customer) session.getAttribute("customer");
 		if (customer != null) {
 			SessionUtils.setSessionVariables(cartService,request,"cart");
-			int numberOfItems = cartService.getNumberOfItems();
-			model.addAttribute("prodList", cartService.getProductsList());
-			model.addAttribute("numberOfItems", numberOfItems);
+//			int numberOfItems = cartService.getNumberOfItems();
+//			model.addAttribute("prodList", cartService.getProductsList());
+//			model.addAttribute("numberOfItems", numberOfItems);
 			return new ModelAndView("checkout");
 		} else {
 			SessionUtils.setSessionVariables(cartService,request,"cartInfo");
@@ -70,7 +70,7 @@ public class CheckoutController {
 		Customer customer = SessionUtils.getSessionVariables(request, "customer");
 		addressService.saveAddress(address, customer);
 		SessionUtils.setSessionVariables(address, request, "address");
-		model.addAttribute("prodList", cartService.getProductsList());
+//		model.addAttribute("prodList", cartService.getProductsList());
 		return "redirect:checkout";
 	}
 

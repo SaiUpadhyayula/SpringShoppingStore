@@ -1,7 +1,6 @@
 package com.spring.shopping.controller;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.shopping.controller.constants.ControllerConstants;
+import com.spring.shopping.model.CartHelperBean;
 import com.spring.shopping.model.Customer;
 import com.spring.shopping.service.CartData;
 import com.spring.shopping.service.CartService;
@@ -28,8 +28,8 @@ public class CartController {
 	private ProductConfigService productService;
 	@Autowired
 	private WishListService wishListService;
-	@SuppressWarnings("unused")
-	private HttpSession session;
+	@Autowired
+	private CartHelperBean cartHelperBean;
 
 	/**
 	 * Method to Add Products to the Shopping Cart First Check if the Product is
@@ -65,8 +65,10 @@ public class CartController {
 			CartData anonymousCartData = cartService.getShoppingCart();
 
 			// Store the Anonymous Cart Data in the Session
-			SessionUtils.setSessionVariables(anonymousCartData, request,
-					customerIdentity);
+			cartHelperBean.setCustomerIdentity(customerIdentity);
+			cartHelperBean.setCartData(anonymousCartData);
+			SessionUtils.setSessionVariables(cartHelperBean, request,
+					ControllerConstants.CART);
 		} else {
 			// Customer is registered, then check whether a shopping cart exists
 			// in Database
@@ -86,14 +88,11 @@ public class CartController {
 				cartService.saveCartInDatabase(cartData, customer);
 			}
 			// Store the Customer Cart Data in the Session
-			SessionUtils.setSessionVariables(cartData, request, customer
-					.getCustomerId().toString());
+			cartHelperBean.setCustomerIdentity(customer.getUserName());
+			cartHelperBean.setCartData(cartData);
+			SessionUtils.setSessionVariables(cartHelperBean, request,
+					ControllerConstants.CART);
 		}
-
-		int numberOfItems = cartService.getNumberOfItems();
-		model.addAttribute("prodList", cartService.getProductsList());
-		model.addAttribute("numberOfItems", numberOfItems);
-		model.addAttribute("cartTotal", cartService.getTotal());
 		return "redirect:/cart";
 	}
 
@@ -101,7 +100,7 @@ public class CartController {
 	 * Method to View the Items of Shopping Cart Retrieves the items to display
 	 * in the shopping cart page
 	 * 
-	 * @author Sai Upadhyayula
+	 * @author SaiUpadhyayula
 	 * 
 	 * @param Model
 	 * @param ProductID
@@ -109,13 +108,11 @@ public class CartController {
 	 * @return Shopping Cart View
 	 */
 	@RequestMapping(value = "/cart", method = RequestMethod.GET)
-	public ModelAndView viewCart(Model model, HttpServletRequest request) {
-		session = SessionUtils.createSession(request);
-		SessionUtils.setSessionVariables(cartService, request, "cart");
-		model.addAttribute("prodList", cartService.getProductsList());
-		int numberOfItems = cartService.getNumberOfItems();
-		model.addAttribute("numberOfItems", numberOfItems);
-		return new ModelAndView("cart");
+	public String viewCart(Model model, HttpServletRequest request) {
+		CartHelperBean cartHelperBean = SessionUtils.getSessionVariables(request, ControllerConstants.CART);
+		CartData cartData = cartHelperBean.getCartData();
+		model.addAttribute("cartData",cartData);
+		return "cart";
 	}
 
 	/**
@@ -135,11 +132,11 @@ public class CartController {
 		Long productId = Long.parseLong(request.getParameter("productid"));
 		int quantity = Integer.parseInt(request.getParameter("quantity"));
 		cartService.updateProduct(productId, quantity);
-		model.addAttribute("cart", cartService);
-		model.addAttribute("prodList", cartService.getProductsList());
-		model.addAttribute("cartTotal", cartService.getTotal());
-		int numberOfItems = cartService.getNumberOfItems();
-		model.addAttribute("numberOfItems", numberOfItems);
+		// model.addAttribute("cart", cartService);
+		// model.addAttribute("prodList", cartService.getProductsList());
+		// model.addAttribute("cartTotal", cartService.getTotal());
+		// int numberOfItems = cartService.getNumberOfItems();
+		// model.addAttribute("numberOfItems", numberOfItems);
 		return new ModelAndView("cart", "cart", cartService);
 	}
 

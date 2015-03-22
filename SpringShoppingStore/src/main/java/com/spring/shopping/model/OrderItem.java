@@ -1,9 +1,11 @@
 package com.spring.shopping.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class OrderItem {
+public class OrderItem implements Serializable{
 
+	private static final long serialVersionUID = 1L;
 	private Long orderItemId;
 	private Long orderId;
 	private Long productId;

@@ -1,6 +1,6 @@
 package com.spring.shopping.service;
 
-import java.util.Map;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,8 +19,6 @@ public class CartService {
 	 * @author Sai Upadhyayula
 	 * 
 	 */
-	// Map to store ProductId and Integer
-	private Map<Long, OrderItem> productsMap;
 	@Autowired
 	private ProductConfigService productConfigService;
 	@Autowired
@@ -28,10 +26,10 @@ public class CartService {
 
 	// Add Products to Shopping Cart
 	public synchronized void addProduct(Long productId) {
-		if (!cartData.contains(productId)) {
+		if (cartData.contains(productId)) {
 			cartData.incrementProductQuantity(productId);
 		} else {
-			OrderItem orderItem = productsMap.get(productId);
+			OrderItem orderItem = cartData.getProduct(productId);
 			Product product = productConfigService.getProductById(productId);
 			if (orderItem == null) {
 				orderItem = new OrderItem();
@@ -44,20 +42,20 @@ public class CartService {
 	}
 
 	public synchronized void updateProduct(Long productId, int quantity) {
-		OrderItem orderItem = productsMap.get(productId);
+		OrderItem orderItem = cartData.getProduct(productId);
 		orderItem.setQuantity(quantity);
 	}
 
 	public synchronized int getProductsCount() {
-		return productsMap.size();
+		return cartData.getCartSize();
 	}
 
 	public synchronized boolean containsProduct(Long productId) {
-		return productsMap.containsKey(productId);
+		return cartData.containsKey(productId);
 	}
 
 	public synchronized void incrementProductQuantity(Long productId) {
-		OrderItem orderItem = productsMap.get(productId);
+		OrderItem orderItem = cartData.getProduct(productId);
 		orderItem.incrementQuantity();
 	}
 
@@ -77,8 +75,8 @@ public class CartService {
 		cartData.clearCart();
 	}
 
-	public synchronized Map<Long, OrderItem> getProductsList() {
-		return cartData.getProductsList();
+	public synchronized List<OrderItem> getOrderItemsList() {
+		return cartData.getOrderItemsList();
 	}
 
 	public synchronized double getTotal() {

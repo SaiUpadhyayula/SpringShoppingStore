@@ -51,7 +51,7 @@ public class CustomerController {
 				"cartInfo");
 		SessionUtils.setSessionVariables(customer, request, "customer");
 		if (cartService != null && customer != null) {
-			model.addAttribute("prodList", cartService.getProductsList());
+//			model.addAttribute("prodList", cartService.getProductsList());
 			int numberOfItems = cartService.getNumberOfItems();
 			model.addAttribute("numberOfItems", numberOfItems);
 			return "redirect:checkout";

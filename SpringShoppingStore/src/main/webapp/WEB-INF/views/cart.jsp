@@ -89,7 +89,7 @@ html,body {
 						</thead>
 						<tbody>
 							<c:choose>
-								<c:when test="${numberOfItems == 0}">
+								<c:when test="${cartData.numberOfItems== 0}">
 									<tr>
 										<c:url var="home" value="home" />
 										<div style="text-align: center">
@@ -99,8 +99,8 @@ html,body {
 									</tr>
 								</c:when>
 								<c:otherwise>
-									<c:set var="cartList" value="${prodList}" />
-									<c:forEach var="item" items="${cartList}">
+									<c:set var="productsList" value="${cartData.productsList}" />
+									<c:forEach var="product" items="${productsList}">
 										<tr>
 											<td class="col-sm-8 col-md-6">
 												<div class="media">
@@ -111,17 +111,14 @@ html,body {
 													</a>
 													<div class="media-body">
 														<c:url var="product" value="product">
-															<c:param name="productId"
-																value="${item.value.product.productId}" />
+															<c:param name="productId" value="${product.productId}" />
 														</c:url>
-
 														<h4 class="media-heading">
-															<a href="${product}"> <c:out
-																	value="${item.value.product.name}" /></a>
+															<a href="${product}"> <c:out value="${product.name}" /></a>
 														</h4>
 														<h5 class="media-heading">
 															by
-															<c:out value="${item.value.product.manufacturer}   " />
+															<c:out value="${product.manufacturer}   " />
 														</h5>
 														<span>Status: </span><span class="text-success"><strong>In
 																Stock</strong></span>
@@ -131,27 +128,27 @@ html,body {
 											<form action="update" method="POST">
 												<td class="col-sm-1 col-md-1" style="text-align: center">
 													<input type="number" name="quantity"
-													value="<c:out value="${item.value.quantity}"/>" size="2"
+													value="<c:out value="${product.quantity}"/>" size="2"
 													maxlength="2" max="10" min="1" /> <input type="hidden"
-													name="productid" value="${item.value.product.productId}" />
+													name="productid" value="${product.productId}" />
 													<button type="submit"
 														class="updateQuantity btn btn-default">Update</button>
 												</td>
 											</form>
 											<td class="col-sm-1 col-md-1 text-center"><strong>Rs.<c:out
-														value="${item.value.product.price}" /></strong></td>
+														value="${product.price}" /></strong></td>
 											<td class="col-sm-1 col-md-1 text-center"><strong>Rs.<c:out
-														value="${item.value.total}" /></strong></td>
+														value="${cartData.total}" /></strong></td>
 											<td class="col-sm-1 col-md-1"><c:url var="remove"
 													value="remove">
 													<c:param name="productId"
-														value="${item.value.product.productId}" />
+														value="${product.productId}" />
 												</c:url> <a href="${remove}" type="button" class="btn btn-danger">
 													<span class="glyphicon glyphicon-remove"></span> Remove
 											</a> <c:if test="${not empty customer}">
 													<c:url var="moveToWishList" value="/moveToWishList">
 														<c:param name="productId"
-															value="${item.value.product.productId}" />
+															value="${product.productId}" />
 													</c:url>
 													<a href="${moveToWishList}" type="button"
 														class="btn btn-success"> Move to Wishlist </a>
@@ -164,7 +161,7 @@ html,body {
 										<td> </td>
 										<td><h5>Subtotal</h5></td>
 										<td class="text-right"><h5>
-												<strong>Rs.<c:out value="${cartTotal}" /></strong>
+												<strong>Rs.<c:out value="${cartData.total}" /></strong>
 											</h5></td>
 									</tr>
 									<tr>
@@ -173,7 +170,7 @@ html,body {
 										<td> </td>
 										<td><h3>Total</h3></td>
 										<td class="text-right"><h3>
-												<strong>Rs.<c:out value="${cartTotal}" /></strong>
+												<strong>Rs.<c:out value="${cartData.total}" /></strong>
 											</h3></td>
 									</tr>
 									<tr>
@@ -195,7 +192,6 @@ html,body {
 									</tr>
 								</c:otherwise>
 							</c:choose>
-
 						</tbody>
 					</table>
 					<div>

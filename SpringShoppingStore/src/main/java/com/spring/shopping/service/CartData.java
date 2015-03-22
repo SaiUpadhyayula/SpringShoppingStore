@@ -1,15 +1,22 @@
 package com.spring.shopping.service;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.spring.shopping.model.OrderItem;
+import com.spring.shopping.model.Product;
 
-public class CartData {
+public class CartData implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	private Map<Long, OrderItem> productsMap;
 	private int numberOfItems;
+	private List<OrderItem> orderItemsList;
+	private List<Product> productsList;
+	private double total;
 
 	public CartData() {
 		productsMap = new ConcurrentHashMap<Long, OrderItem>();
@@ -54,8 +61,20 @@ public class CartData {
 		productsMap.remove(productId);
 	}
 
-	public Map<Long, OrderItem> getProductsList() {
-		return productsMap;
+	public List<OrderItem> getOrderItemsList() {
+		// HashMap.values() returns a Collection which cannot be cast into List
+		// Thus create an ArrayList and set it as a constructor.
+		orderItemsList = new ArrayList<OrderItem>(productsMap.values());
+		return orderItemsList;
+	}
+
+	public List<Product> getProductsList() {
+		orderItemsList = getOrderItemsList();
+		productsList = new ArrayList<Product>();
+		for (OrderItem o : orderItemsList) {
+			productsList.add(o.getProduct());
+		}
+		return productsList;
 	}
 
 	public double getTotal() {
@@ -63,10 +82,23 @@ public class CartData {
 		for (OrderItem item : productsMap.values()) {
 			amount = amount + (item.getTotal()).doubleValue();
 		}
-		return amount;
+		total = amount;
+		return total;
 	}
 
 	public boolean isCartEmpty() {
 		return productsMap.isEmpty();
+	}
+
+	public OrderItem getProduct(Long productId) {
+		return productsMap.get(productId);
+	}
+
+	public int getCartSize() {
+		return productsMap.size();
+	}
+
+	public boolean containsKey(Long productId) {
+		return productsMap.containsKey(productId);
 	}
 }
