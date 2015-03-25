@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.spring.shopping.controller.constants.ControllerConstants;
 import com.spring.shopping.model.Customer;
+import com.spring.shopping.service.CartData;
 import com.spring.shopping.service.CartService;
 import com.spring.shopping.service.CustomerService;
 import com.spring.shopping.service.MailSenderService;
@@ -51,8 +53,8 @@ public class CustomerController {
 				"cartInfo");
 		SessionUtils.setSessionVariables(customer, request, "customer");
 		if (cartService != null && customer != null) {
-//			model.addAttribute("prodList", cartService.getProductsList());
-			int numberOfItems = cartService.getNumberOfItems();
+			CartData cartData = SessionUtils.getSessionVariables(request, ControllerConstants.CART);
+			int numberOfItems = cartService.getNumberOfItems(cartData);
 			model.addAttribute("numberOfItems", numberOfItems);
 			return "redirect:checkout";
 		} else if (customer != null) {

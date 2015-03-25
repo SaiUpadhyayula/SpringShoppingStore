@@ -17,12 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.spring.shopping.model.CartHelperBean;
 import com.spring.shopping.model.Category;
 import com.spring.shopping.model.Product;
 import com.spring.shopping.model.SubCategory;
+import com.spring.shopping.service.CartData;
 import com.spring.shopping.service.CartService;
 import com.spring.shopping.service.CategoryConfigService;
 import com.spring.shopping.service.ProductConfigService;
+import com.spring.shopping.util.SessionUtils;
 
 /**
  * @author Sai Upadhyayula Handles requests for the application home page.
@@ -74,20 +77,6 @@ public class CatalogController {
 			model.addAttribute("featProd",
 					productConfigurationService.getFeaturedProducts());
 		}
-//		ConcurrentHashMap<Object,CartData> customerCart = SessionUtils.getSessionVariables(request,
-//				ControllerConstants.CART);
-//		if(customerCart!=null){
-//			Set<Object> customerSet = customerCart.keySet();
-//			Iterator<Object> i = customerSet.iterator();
-//			Object customerDetails = null;
-//			while(i.hasNext()){
-//				customerDetails = i.next();
-//			}
-//			CartData cart = null;
-//			if(customerDetails != null)
-//				cart = customerCart.get(customerDetails);
-//			SessionUtils.setSessionVariables(cart.getNumberOfItems(), request, ControllerConstants.NUMBER_OF_ITEMS);
-//		}
 		return getHomePage();
 	}
 

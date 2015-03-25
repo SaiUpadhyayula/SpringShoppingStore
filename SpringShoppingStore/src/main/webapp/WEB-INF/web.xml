@@ -23,4 +23,8 @@
   <listener>
     <listener-class>com.spring.shopping.listener.CartTrackingListener</listener-class>
   </listener>
+  <error-page>
+  	<exception-type>java.lang.Exception</exception-type>
+  	<location>/views/template/error.jsp</location>
+  </error-page>
 </web-app>

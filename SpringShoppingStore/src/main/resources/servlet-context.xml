@@ -46,8 +46,6 @@
 	<beans:bean id="orderService"
 		class="com.spring.shopping.service.OrderServiceImpl" />
 
-	<beans:bean id="cartHelperBean" class="com.spring.shopping.model.CartHelperBean" />
-
 	<beans:bean id="wishListService"
 		class="com.spring.shopping.service.WishListServiceImpl" />
 

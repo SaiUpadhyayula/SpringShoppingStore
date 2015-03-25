@@ -8,10 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.shopping.controller.constants.ControllerConstants;
-import com.spring.shopping.model.CartHelperBean;
 import com.spring.shopping.model.Customer;
 import com.spring.shopping.service.CartData;
 import com.spring.shopping.service.CartService;
@@ -29,7 +27,10 @@ public class CartController {
 	@Autowired
 	private WishListService wishListService;
 	@Autowired
-	private CartHelperBean cartHelperBean;
+	private CartData cartData;
+
+	private final static String cartPage = "cart";
+	private final static String redirectView = "redirect:/cart";
 
 	/**
 	 * Method to Add Products to the Shopping Cart First Check if the Product is
@@ -52,23 +53,11 @@ public class CartController {
 		if (customer == null) {
 			// Customer is anonymous, so create a shared cart and add it to
 			// session
-			// We use the IP Address & Remote Port to identify
-			// the cart contents of a customer.
-			// Add this information to be accessed in the session.
-			String ipAddr = request.getRemoteAddr();
-			String host = request.getRemoteHost();
-			ipAddr.replace(".", "");
-			String customerIdentity = ipAddr + host;
-
 			// Creates a new cart for the anonymous customer
-			cartService.addProduct(productId);
 			CartData anonymousCartData = cartService.getShoppingCart();
-
-			// Store the Anonymous Cart Data in the Session
-			cartHelperBean.setCustomerIdentity(customerIdentity);
-			cartHelperBean.setCartData(anonymousCartData);
-			SessionUtils.setSessionVariables(cartHelperBean, request,
+			SessionUtils.setSessionVariables(anonymousCartData, request,
 					ControllerConstants.CART);
+			cartService.addProduct(anonymousCartData, productId);
 		} else {
 			// Customer is registered, then check whether a shopping cart exists
 			// in Database
@@ -77,23 +66,20 @@ public class CartController {
 			CartData cartData = cartService.getShoppingCartByCustomer(customer);
 
 			if (cartData == null) {
-				cartService.addProduct(productId);
+				cartService.addProduct(cartData, productId);
 				cartData = cartService.getShoppingCart();
 				cartService.saveShoppingCartDetails(cartData, customer);
 			} else {
 				// If there is shopping cart in Database, add the products
 				// to the existing shopping cart and save them back in database.
-				cartService.setShoppingCart(cartData);
-				cartService.addProduct(productId);
+				cartService.addProduct(cartData, productId);
 				cartService.saveCartInDatabase(cartData, customer);
 			}
 			// Store the Customer Cart Data in the Session
-			cartHelperBean.setCustomerIdentity(customer.getUserName());
-			cartHelperBean.setCartData(cartData);
-			SessionUtils.setSessionVariables(cartHelperBean, request,
+			SessionUtils.setSessionVariables(cartData, request,
 					ControllerConstants.CART);
 		}
-		return "redirect:/cart";
+		return getRedirectview();
 	}
 
 	/**
@@ -109,10 +95,7 @@ public class CartController {
 	 */
 	@RequestMapping(value = "/cart", method = RequestMethod.GET)
 	public String viewCart(Model model, HttpServletRequest request) {
-		CartHelperBean cartHelperBean = SessionUtils.getSessionVariables(request, ControllerConstants.CART);
-		CartData cartData = cartHelperBean.getCartData();
-		model.addAttribute("cartData",cartData);
-		return "cart";
+		return getCartpage();
 	}
 
 	/**
@@ -128,16 +111,13 @@ public class CartController {
 
 	// TODO- Implement BindingResult and FormValidations
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public ModelAndView updateCart(Model model, HttpServletRequest request) {
+	public String updateCart(Model model, HttpServletRequest request) {
 		Long productId = Long.parseLong(request.getParameter("productid"));
 		int quantity = Integer.parseInt(request.getParameter("quantity"));
-		cartService.updateProduct(productId, quantity);
-		// model.addAttribute("cart", cartService);
-		// model.addAttribute("prodList", cartService.getProductsList());
-		// model.addAttribute("cartTotal", cartService.getTotal());
-		// int numberOfItems = cartService.getNumberOfItems();
-		// model.addAttribute("numberOfItems", numberOfItems);
-		return new ModelAndView("cart", "cart", cartService);
+		CartData cartData = SessionUtils.getSessionVariables(request,
+				ControllerConstants.CART);
+		cartService.updateProduct(cartData, productId, quantity);
+		return "redirect:/cart";
 	}
 
 	/**
@@ -151,14 +131,13 @@ public class CartController {
 	 * @return Shopping Cart View
 	 */
 	@RequestMapping(value = "/remove", method = RequestMethod.GET)
-	public ModelAndView removeProduct(
+	public String removeProduct(
 			@RequestParam(value = "productId") Long productId, Model model,
 			HttpServletRequest request) {
-		cartService.removeProduct(productId);
-		int numberOfItems = cartService.getNumberOfItems();
-		model.addAttribute("numberOfItems", numberOfItems);
-		model.addAttribute("cart", cartService);
-		return new ModelAndView("cart", "cart", cartService);
+		CartData cartData = SessionUtils.getSessionVariables(request,
+				ControllerConstants.CART);
+		cartService.removeProduct(cartData, productId);
+		return getRedirectview();
 	}
 
 	/**
@@ -172,10 +151,18 @@ public class CartController {
 	 * @return Shopping Cart View
 	 */
 	@RequestMapping(value = "/clear", method = RequestMethod.GET)
-	public ModelAndView clearCart(Model model) {
-		cartService.clearCart();
-		int numberOfItems = cartService.getNumberOfItems();
-		model.addAttribute("numberOfItems", numberOfItems);
-		return new ModelAndView("cart");
+	public String clearCart(Model model, HttpServletRequest request) {
+		CartData cartData = SessionUtils.getSessionVariables(request,
+				ControllerConstants.CART);
+		cartService.clearCart(cartData);
+		return getRedirectview();
+	}
+
+	public static String getRedirectview() {
+		return redirectView;
+	}
+
+	public static String getCartpage() {
+		return cartPage;
 	}
 }

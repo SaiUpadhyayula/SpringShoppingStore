@@ -89,7 +89,7 @@ html,body {
 						</thead>
 						<tbody>
 							<c:choose>
-								<c:when test="${cartData.numberOfItems== 0}">
+								<c:when test="${cart.numberOfItems== 0}">
 									<tr>
 										<c:url var="home" value="home" />
 										<div style="text-align: center">
@@ -99,8 +99,8 @@ html,body {
 									</tr>
 								</c:when>
 								<c:otherwise>
-									<c:set var="productsList" value="${cartData.productsList}" />
-									<c:forEach var="product" items="${productsList}">
+									<c:set var="productsList" value="${cart.orderItemsList}" />
+									<c:forEach var="list" items="${productsList}">
 										<tr>
 											<td class="col-sm-8 col-md-6">
 												<div class="media">
@@ -111,14 +111,16 @@ html,body {
 													</a>
 													<div class="media-body">
 														<c:url var="product" value="product">
-															<c:param name="productId" value="${product.productId}" />
+															<c:param name="productId"
+																value="${list.product.productId}" />
 														</c:url>
 														<h4 class="media-heading">
-															<a href="${product}"> <c:out value="${product.name}" /></a>
+															<a href="${product}"> <c:out
+																	value="${list.product.name}" /></a>
 														</h4>
 														<h5 class="media-heading">
 															by
-															<c:out value="${product.manufacturer}   " />
+															<c:out value="${list.product.manufacturer}   " />
 														</h5>
 														<span>Status: </span><span class="text-success"><strong>In
 																Stock</strong></span>
@@ -128,27 +130,26 @@ html,body {
 											<form action="update" method="POST">
 												<td class="col-sm-1 col-md-1" style="text-align: center">
 													<input type="number" name="quantity"
-													value="<c:out value="${product.quantity}"/>" size="2"
+													value="<c:out value="${list.quantity}"/>" size="2"
 													maxlength="2" max="10" min="1" /> <input type="hidden"
-													name="productid" value="${product.productId}" />
+													name="productid" value="${list.product.productId}" />
 													<button type="submit"
 														class="updateQuantity btn btn-default">Update</button>
 												</td>
 											</form>
 											<td class="col-sm-1 col-md-1 text-center"><strong>Rs.<c:out
-														value="${product.price}" /></strong></td>
+														value="${list.product.price}" /></strong></td>
 											<td class="col-sm-1 col-md-1 text-center"><strong>Rs.<c:out
-														value="${cartData.total}" /></strong></td>
+														value="${list.total}" /></strong></td>
 											<td class="col-sm-1 col-md-1"><c:url var="remove"
 													value="remove">
-													<c:param name="productId"
-														value="${product.productId}" />
+													<c:param name="productId" value="${list.product.productId}" />
 												</c:url> <a href="${remove}" type="button" class="btn btn-danger">
 													<span class="glyphicon glyphicon-remove"></span> Remove
 											</a> <c:if test="${not empty customer}">
 													<c:url var="moveToWishList" value="/moveToWishList">
 														<c:param name="productId"
-															value="${product.productId}" />
+															value="${list.product.productId}" />
 													</c:url>
 													<a href="${moveToWishList}" type="button"
 														class="btn btn-success"> Move to Wishlist </a>
@@ -161,7 +162,7 @@ html,body {
 										<td> </td>
 										<td><h5>Subtotal</h5></td>
 										<td class="text-right"><h5>
-												<strong>Rs.<c:out value="${cartData.total}" /></strong>
+												<strong>Rs.<c:out value="${cart.total}" /></strong>
 											</h5></td>
 									</tr>
 									<tr>
@@ -170,7 +171,7 @@ html,body {
 										<td> </td>
 										<td><h3>Total</h3></td>
 										<td class="text-right"><h3>
-												<strong>Rs.<c:out value="${cartData.total}" /></strong>
+												<strong>Rs.<c:out value="${cart.total}" /></strong>
 											</h3></td>
 									</tr>
 									<tr>

@@ -38,7 +38,7 @@ public class CheckoutController {
 		session = SessionUtils.createSession(request);
 		Customer customer = (Customer) session.getAttribute("customer");
 		if (customer != null) {
-			SessionUtils.setSessionVariables(cartService,request,"cart");
+//			SessionUtils.setSessionVariables(cartService,request,"cart");
 //			int numberOfItems = cartService.getNumberOfItems();
 //			model.addAttribute("prodList", cartService.getProductsList());
 //			model.addAttribute("numberOfItems", numberOfItems);

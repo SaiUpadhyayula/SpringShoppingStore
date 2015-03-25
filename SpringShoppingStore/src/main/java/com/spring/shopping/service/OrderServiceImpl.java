@@ -8,15 +8,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.spring.shopping.controller.constants.ControllerConstants;
 import com.spring.shopping.model.AddressForm;
 import com.spring.shopping.model.Customer;
 import com.spring.shopping.model.Order;
 import com.spring.shopping.model.OrderItem;
 import com.spring.shopping.model.Product;
 import com.spring.shopping.repository.OrderRepository;
+import com.spring.shopping.util.SessionUtils;
 import com.spring.shopping.util.Utility;
 
 @Service
@@ -30,7 +34,8 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public void createOrder(Order order, CartService cartService,
-			Customer customer, AddressForm address) throws ParseException {
+			Customer customer, AddressForm address, HttpServletRequest request)
+			throws ParseException {
 		Date date = new Date();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String formattedDate = dateFormat.format(date);
@@ -41,10 +46,12 @@ public class OrderServiceImpl implements OrderService {
 		order.setCreatedDate(sqlDate);
 		order.setEmailAddress(customer.getEmailAddress());
 		order.setOrderStatus(PENDING_ORDER_STATUS);
-		order.setOrderTotal(new BigDecimal(cartService.getTotal()));
+		CartData cartData = SessionUtils.getSessionVariables(request,
+				ControllerConstants.CART);
+		order.setOrderTotal(new BigDecimal(cartService.getTotal(cartData)));
 		order.setCustomerId(customer.getCustomerId());
 		List<OrderItem> orderItemsList = new ArrayList<OrderItem>();
-		for (OrderItem orderItem : cartService.getOrderItemsList()) {
+		for (OrderItem orderItem : cartService.getOrderItemsList(cartData)) {
 			orderItemsList.add(orderItem);
 		}
 		orderRepository.createOrder(order, orderItemsList, address);

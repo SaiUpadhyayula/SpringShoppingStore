@@ -18,6 +18,7 @@ import com.spring.shopping.controller.constants.ControllerConstants;
 import com.spring.shopping.model.Customer;
 import com.spring.shopping.model.Product;
 import com.spring.shopping.model.ReviewForm;
+import com.spring.shopping.service.CartData;
 import com.spring.shopping.service.CartService;
 import com.spring.shopping.service.CategoryConfigService;
 import com.spring.shopping.service.CustomerService;
@@ -57,9 +58,8 @@ public class ProductController {
 		Product product = productConfigurationService.getProductById(productId);
 		model.addAttribute("product", product);
 
-		int numberOfItems = SessionUtils.getSessionVariables(request,
-				ControllerConstants.CART);
-		model.addAttribute(ControllerConstants.NUMBER_OF_ITEMS, numberOfItems);
+		CartData cartData = SessionUtils.getSessionVariables(request,ControllerConstants.CART);		
+		model.addAttribute(ControllerConstants.NUMBER_OF_ITEMS, cartData.getNumberOfItems());
 
 		Customer customer = SessionUtils.getSessionVariables(request,
 				ControllerConstants.CUSTOMER);

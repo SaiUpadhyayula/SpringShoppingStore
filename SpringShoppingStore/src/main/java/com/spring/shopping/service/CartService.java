@@ -2,9 +2,12 @@ package com.spring.shopping.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.spring.shopping.controller.constants.ControllerConstants;
 import com.spring.shopping.model.Customer;
 import com.spring.shopping.model.OrderItem;
 import com.spring.shopping.model.Product;
@@ -22,10 +25,10 @@ public class CartService {
 	@Autowired
 	private ProductConfigService productConfigService;
 	@Autowired
-	private CartData cartData;
+	private HttpSession session;
 
 	// Add Products to Shopping Cart
-	public synchronized void addProduct(Long productId) {
+	public synchronized void addProduct(CartData cartData, Long productId) {
 		if (cartData.contains(productId)) {
 			cartData.incrementProductQuantity(productId);
 		} else {
@@ -41,58 +44,63 @@ public class CartService {
 		}
 	}
 
-	public synchronized void updateProduct(Long productId, int quantity) {
+	public synchronized void updateProduct(CartData cartData, Long productId,
+			int quantity) {
 		OrderItem orderItem = cartData.getProduct(productId);
 		orderItem.setQuantity(quantity);
 	}
 
-	public synchronized int getProductsCount() {
+	public synchronized int getProductsCount(CartData cartData) {
 		return cartData.getCartSize();
 	}
 
-	public synchronized boolean containsProduct(Long productId) {
+	public synchronized boolean containsProduct(CartData cartData,
+			Long productId) {
 		return cartData.containsKey(productId);
 	}
 
-	public synchronized void incrementProductQuantity(Long productId) {
+	public synchronized void incrementProductQuantity(CartData cartData,
+			Long productId) {
 		OrderItem orderItem = cartData.getProduct(productId);
 		orderItem.incrementQuantity();
 	}
 
-	public synchronized void decrementProductQuantity(Long productId) {
+	public synchronized void decrementProductQuantity(CartData cartData,
+			Long productId) {
 		cartData.decrementProductQuantity(productId);
 	}
 
-	public synchronized int getNumberOfItems() {
+	public synchronized int getNumberOfItems(CartData cartData) {
 		return cartData.getNumberOfItems();
 	}
 
-	public synchronized void removeProduct(Long productId) {
+	public synchronized void removeProduct(CartData cartData, Long productId) {
 		cartData.removeProduct(productId);
 	}
 
-	public synchronized void clearCart() {
+	public synchronized void clearCart(CartData cartData) {
 		cartData.clearCart();
 	}
 
-	public synchronized List<OrderItem> getOrderItemsList() {
+	public synchronized List<OrderItem> getOrderItemsList(CartData cartData) {
 		return cartData.getOrderItemsList();
 	}
 
-	public synchronized double getTotal() {
+	public synchronized double getTotal(CartData cartData) {
 		return cartData.getTotal();
 	}
 
-	public synchronized boolean isCartEmpty() {
+	public synchronized boolean isCartEmpty(CartData cartData) {
 		return cartData.isCartEmpty();
 	}
 
 	public CartData getShoppingCart() {
-		return cartData;
-	}
-
-	public void setShoppingCart(CartData cartData) {
-		this.cartData = cartData;
+		CartData cartData = (CartData) session
+				.getAttribute(ControllerConstants.CART);
+		if (cartData != null)
+			return cartData;
+		else
+			return new CartData();
 	}
 
 	public CartData getShoppingCartByCustomer(Customer customer) {

@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.spring.shopping.controller.constants.ControllerConstants;
 import com.spring.shopping.model.Customer;
 import com.spring.shopping.model.Product;
+import com.spring.shopping.service.CartData;
 import com.spring.shopping.service.CartService;
 import com.spring.shopping.service.WishListService;
 import com.spring.shopping.util.SessionUtils;
@@ -74,8 +76,10 @@ public class WishListController {
 			HttpServletRequest request) {
 		boolean flag = addProduct(request, productId);
 		if (flag) {
-			cartService.removeProduct(productId);
-			int numberOfItems = cartService.getNumberOfItems();
+			CartData cartData = SessionUtils.getSessionVariables(request,
+					ControllerConstants.CART);
+			cartService.removeProduct(cartData, productId);
+			int numberOfItems = cartService.getNumberOfItems(cartData);
 			model.addAttribute("numberOfItems", numberOfItems);
 			model.addAttribute("cart", cartService);
 			return "cart";

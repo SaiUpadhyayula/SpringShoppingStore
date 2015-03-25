@@ -17,6 +17,12 @@ public class CartData implements Serializable {
 	private List<OrderItem> orderItemsList;
 	private List<Product> productsList;
 	private double total;
+	private int quantity;
+	private String customerIdentification;
+
+	public int getQuantity() {
+		return quantity;
+	}
 
 	public CartData() {
 		productsMap = new ConcurrentHashMap<Long, OrderItem>();
@@ -100,5 +106,9 @@ public class CartData implements Serializable {
 
 	public boolean containsKey(Long productId) {
 		return productsMap.containsKey(productId);
+	}
+
+	public String getCustomerIdentification() {
+		return customerIdentification;
 	}
 }

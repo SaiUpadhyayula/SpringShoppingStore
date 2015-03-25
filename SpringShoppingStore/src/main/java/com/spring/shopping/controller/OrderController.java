@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.spring.shopping.controller.constants.ControllerConstants;
 import com.spring.shopping.model.AddressForm;
 import com.spring.shopping.model.CreditCardForm;
 import com.spring.shopping.model.Customer;
 import com.spring.shopping.model.Order;
 import com.spring.shopping.model.Product;
+import com.spring.shopping.service.CartData;
 import com.spring.shopping.service.CartService;
 import com.spring.shopping.service.MailSenderService;
 import com.spring.shopping.service.OrderService;
@@ -60,7 +62,7 @@ public class OrderController {
 		AddressForm address = SessionUtils.getSessionVariables(request,
 				"address");
 
-		orderService.createOrder(order, cartService, customer, address);
+		orderService.createOrder(order, cartService, customer, address,request);
 		payAmountByCreditCard(creditCardForm, request);
 
 		SessionUtils.setSessionVariables(order, request, "orderDetails");
@@ -95,7 +97,8 @@ public class OrderController {
 		model.addAttribute("orderDetails", order);
 		List<Product> productsList = orderService.getAllOrderItems(order);
 		model.addAttribute("prodList", productsList);
-		cartService.clearCart();
+		CartData cartData = SessionUtils.getSessionVariables(request, ControllerConstants.CART);		
+		cartService.clearCart(cartData);
 		return "order";
 	}
 }

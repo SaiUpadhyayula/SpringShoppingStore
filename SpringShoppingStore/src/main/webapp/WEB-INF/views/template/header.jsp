@@ -63,7 +63,7 @@
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown"><span id="cartIcon"><i
 						class="icon-shopping-cart icon-red"></i> <c:set var="cartItems"
-							scope="session" value="${numberOfItems}" /> <span
+							value="${cart.numberOfItems}" /> <span
 						class="headerCartItemsCount"> <c:choose>
 								<c:when test="${empty cartItems}">0
 							</c:when>
@@ -74,8 +74,8 @@
 					</span> <span class="headerCartItemsCountWord"><c:out
 								value="${cartItems==1?'item':'items'}" /></span></span> <b class="caret"></b></span></a>
 					<ul class="dropdown-menu">
-						<c:url var="cart" value="/cart" />
-						<li><a tabindex="-1" href="${cart}">View Cart</a></li>
+						<c:url var="cart1" value="/cart" />
+						<li><a tabindex="-1" href="${cart1}">View Cart</a></li>
 					</ul></li>
 				<c:choose>
 					<c:when test="${not empty customer}">
