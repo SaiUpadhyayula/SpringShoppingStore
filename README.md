@@ -1,7 +1,7 @@
 #SpringShoppingStore
 SpringShoppingStore is a sample shopping store which is under development.
 
-This project uses Spring MVC,Twitter Bootstrap, JPA-Hibernate/JDBC implementations.
+This project uses Spring MVC,Twitter Bootstrap, JDBC implementations.
 
 Features
 --------
