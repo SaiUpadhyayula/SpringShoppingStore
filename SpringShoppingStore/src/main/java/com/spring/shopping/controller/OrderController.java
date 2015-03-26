@@ -48,21 +48,18 @@ public class OrderController {
 	@RequestMapping(value = "/createOrderByCC", method = RequestMethod.POST)
 	public String createOrder(Model model,
 			@ModelAttribute("paymentForm") CreditCardForm creditCardForm,
-			HttpServletRequest request, HttpServletResponse response,
-			@ModelAttribute("order") Order order) throws ParseException,
+			HttpServletRequest request, HttpServletResponse response) throws ParseException,
 			IOException {
 
 		session = SessionUtils.createSession(request);
 		// Retrieve Details about the Cart,Customer and Address Details
 		// used to create detailed Order
-		CartService cartService = SessionUtils.getSessionVariables(request,
-				"cart");
 		Customer customer = SessionUtils.getSessionVariables(request,
 				"customer");
 		AddressForm address = SessionUtils.getSessionVariables(request,
 				"address");
 
-		orderService.createOrder(order, cartService, customer, address,request);
+		Order order = orderService.createOrder(cartService, customer, address,request);
 		payAmountByCreditCard(creditCardForm, request);
 
 		SessionUtils.setSessionVariables(order, request, "orderDetails");

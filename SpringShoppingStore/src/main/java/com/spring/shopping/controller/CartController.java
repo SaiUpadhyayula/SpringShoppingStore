@@ -50,7 +50,7 @@ public class CartController {
 		// if he is a registered or an anonymous customer.
 		Customer customer = SessionUtils.getSessionVariables(request,
 				ControllerConstants.CUSTOMER);
-		if (customer == null) {
+		if (customer != null) {
 			// Customer is anonymous, so create a shared cart and add it to
 			// session
 			// Creates a new cart for the anonymous customer
@@ -59,27 +59,25 @@ public class CartController {
 					ControllerConstants.CART);
 			cartService.addProduct(anonymousCartData, productId);
 		} else {
-			// Customer is registered, then check whether a shopping cart exists
-			// in Database
-			// If there is no shopping cart in Database, then create a shopping
-			// cart and store it
-			CartData cartData = cartService.getShoppingCartByCustomer(customer);
 
-			if (cartData == null) {
-				cartService.addProduct(cartData, productId);
-				cartData = cartService.getShoppingCart();
-				cartService.saveShoppingCartDetails(cartData, customer);
-			} else {
-				// If there is shopping cart in Database, add the products
-				// to the existing shopping cart and save them back in database.
-				cartService.addProduct(cartData, productId);
-				cartService.saveCartInDatabase(cartData, customer);
-			}
-			// Store the Customer Cart Data in the Session
-			SessionUtils.setSessionVariables(cartData, request,
+			CartData customerCartData = null;
+			customerCartData = SessionUtils.getSessionVariables(request,
 					ControllerConstants.CART);
+			if (customerCartData == null) {
+				customerCartData = cartService.getShoppingCart();
+				SessionUtils.setSessionVariables(customerCartData, request,
+						ControllerConstants.CART);
+				cartService.addProduct(customerCartData, productId);
+			} else {
+				cartService.addProduct(customerCartData, productId);
+			}
+			// TODO: Extend the add to cart functionality
+
+			// When the customer is registered, cart contents must be
+			// stored in the database, and stored in the session.
 		}
 		return getRedirectview();
+
 	}
 
 	/**

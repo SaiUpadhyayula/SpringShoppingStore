@@ -33,7 +33,7 @@ public class OrderServiceImpl implements OrderService {
 	// private final String COMPLETED_ORDER_STATUS = "Completed";
 
 	@Override
-	public void createOrder(Order order, CartService cartService,
+	public Order createOrder(CartService cartService,
 			Customer customer, AddressForm address, HttpServletRequest request)
 			throws ParseException {
 		Date date = new Date();
@@ -42,6 +42,7 @@ public class OrderServiceImpl implements OrderService {
 		Date presentDate = dateFormat.parse(formattedDate);
 		java.sql.Date sqlDate = new java.sql.Date(presentDate.getTime());
 		Long orderId = Utility.generateOrderNumber(date, customer);
+		Order order = new Order();
 		order.setOrderId(orderId);
 		order.setCreatedDate(sqlDate);
 		order.setEmailAddress(customer.getEmailAddress());
@@ -55,7 +56,7 @@ public class OrderServiceImpl implements OrderService {
 			orderItemsList.add(orderItem);
 		}
 		orderRepository.createOrder(order, orderItemsList, address);
-
+		return order;
 	}
 
 	@Override

@@ -105,7 +105,7 @@ hr {
 						</thead>
 						<tbody>
 							<c:choose>
-								<c:when test="${numberOfItems == 0}">
+								<c:when test="${cart.numberOfItems == 0}">
 									<tr>
 										<td><c:url var="home" value="home" />
 											<h4>Your Shopping Cart is Empty</h4> <a href="${home}"
@@ -113,7 +113,7 @@ hr {
 									</tr>
 								</c:when>
 								<c:otherwise>
-									<c:set var="cartList" value="${prodList}" />
+									<c:set var="cartList" value="${cart.orderItemsList}" />
 									<c:forEach var="item" items="${cartList}">
 										<tr>
 											<td class="col-sm-8 col-md-6">
@@ -126,16 +126,16 @@ hr {
 													<div class="media-body">
 														<c:url var="product" value="product">
 															<c:param name="productId"
-																value="${item.value.product.productId}" />
+																value="${item.product.productId}" />
 														</c:url>
 
 														<h4 class="media-heading">
 															<a href="${product}"> <c:out
-																	value="${item.value.product.name}" /></a>
+																	value="${item.product.name}" /></a>
 														</h4>
 														<h5 class="media-heading">
 															by
-															<c:out value="${item.value.product.manufacturer}   " />
+															<c:out value="${item.product.manufacturer}   " />
 														</h5>
 														<span>Status: </span><span class="text-success"><strong>In
 																Stock</strong></span>
@@ -144,17 +144,17 @@ hr {
 											</td>
 											<td class="col-md-1" style="text-align: center">
 												<div>
-													<c:out value="${item.value.quantity}" />
+													<c:out value="${item.quantity}" />
 												</div>
 											</td>
 											<td class="col-sm-1 col-md-1 text-center"><strong>Rs.<c:out
-														value="${item.value.product.price}" /></strong></td>
+														value="${item.product.price}" /></strong></td>
 											<td class="col-sm-1 col-md-1 text-center"><strong>Rs.<c:out
-														value="${item.value.total}" /></strong></td>
+														value="${item.total}" /></strong></td>
 											<td class="col-sm-1 col-md-1"><c:url var="remove"
 													value="remove">
 													<c:param name="productId"
-														value="${item.value.product.productId}" />
+														value="${item.product.productId}" />
 												</c:url> <a href="cart" type="button" class="btn btn-primary"> <span
 													class="glyphicon glyphicon-edit"></span> Edit
 											</a></td>

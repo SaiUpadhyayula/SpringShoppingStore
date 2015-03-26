@@ -11,7 +11,7 @@ import com.spring.shopping.model.Order;
 import com.spring.shopping.model.Product;
 
 public interface OrderService {
-	public void createOrder(Order order, CartService cartService,
+	public Order createOrder(CartService cartService,
 			Customer customer, AddressForm address, HttpServletRequest request) throws ParseException;
 	public List<Product> getAllOrderItems(Order order);
 	

@@ -58,8 +58,9 @@ public class ProductController {
 		Product product = productConfigurationService.getProductById(productId);
 		model.addAttribute("product", product);
 
-		CartData cartData = SessionUtils.getSessionVariables(request,ControllerConstants.CART);		
-		model.addAttribute(ControllerConstants.NUMBER_OF_ITEMS, cartData.getNumberOfItems());
+		CartData cartData = SessionUtils.getSessionVariables(request,ControllerConstants.CART);	
+		if(cartData != null)
+			model.addAttribute(ControllerConstants.NUMBER_OF_ITEMS, cartData.getNumberOfItems());
 
 		Customer customer = SessionUtils.getSessionVariables(request,
 				ControllerConstants.CUSTOMER);

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.spring.shopping.model.Customer;
 import com.spring.shopping.model.OrderItem;
 import com.spring.shopping.model.Product;
 
@@ -18,7 +19,6 @@ public class CartData implements Serializable {
 	private List<Product> productsList;
 	private double total;
 	private int quantity;
-	private String customerIdentification;
 
 	public int getQuantity() {
 		return quantity;
@@ -106,9 +106,5 @@ public class CartData implements Serializable {
 
 	public boolean containsKey(Long productId) {
 		return productsMap.containsKey(productId);
-	}
-
-	public String getCustomerIdentification() {
-		return customerIdentification;
 	}
 }

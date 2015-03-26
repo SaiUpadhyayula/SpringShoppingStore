@@ -76,9 +76,6 @@ public class CheckoutController {
 
 	@RequestMapping(value = "/payment", method = RequestMethod.GET)
 	public String getPaymentForm(Model model, HttpServletRequest request) {
-		session = SessionUtils.createSession(request);
-		session.setAttribute("cart", cartService);
-		SessionUtils.getSessionVariables(request, "cartDetails");
 		return "payment";
 	}
 
