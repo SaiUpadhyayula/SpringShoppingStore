@@ -19,8 +19,6 @@ import com.spring.shopping.model.Customer;
 import com.spring.shopping.model.Product;
 import com.spring.shopping.model.ReviewForm;
 import com.spring.shopping.service.CartData;
-import com.spring.shopping.service.CartService;
-import com.spring.shopping.service.CategoryConfigService;
 import com.spring.shopping.service.CustomerService;
 import com.spring.shopping.service.ProductConfigService;
 import com.spring.shopping.service.ReviewService;
@@ -29,12 +27,12 @@ import com.spring.shopping.util.SessionUtils;
 @Controller
 public class ProductController {
 
-	@Autowired
-	private CartService cartService;
+//	@Autowired
+//	private CartService cartService;
 	@Autowired
 	private ProductConfigService productConfigurationService;
-	@Autowired
-	private CategoryConfigService categoryConfigurationService;
+//	@Autowired
+//	private CategoryConfigService categoryConfigurationService;
 	@Autowired
 	private ReviewService reviewService;
 	@Autowired

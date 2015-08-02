@@ -17,15 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.spring.shopping.model.CartHelperBean;
 import com.spring.shopping.model.Category;
 import com.spring.shopping.model.Product;
 import com.spring.shopping.model.SubCategory;
-import com.spring.shopping.service.CartData;
-import com.spring.shopping.service.CartService;
 import com.spring.shopping.service.CategoryConfigService;
 import com.spring.shopping.service.ProductConfigService;
-import com.spring.shopping.util.SessionUtils;
 
 /**
  * @author Sai Upadhyayula Handles requests for the application home page.
@@ -39,8 +35,8 @@ public class CatalogController {
 	private ProductConfigService productConfigurationService;
 	@Autowired
 	private ServletContext context;
-	@Autowired
-	private CartService cartService;
+//	@Autowired
+//	private CartService cartService;
 
 	private String accountsTemplatePage = "template/accountInformation";
 

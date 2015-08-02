@@ -40,11 +40,12 @@ public class OrderServiceImpl implements OrderService {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String formattedDate = dateFormat.format(date);
 		Date presentDate = dateFormat.parse(formattedDate);
-		java.sql.Date sqlDate = new java.sql.Date(presentDate.getTime());
+		java.util.Date sqlDate = new java.util.Date(presentDate.getTime());
 		Long orderId = Utility.generateOrderNumber(date, customer);
 		Order order = new Order();
 		order.setOrderId(orderId);
 		order.setCreatedDate(sqlDate);
+		order.setUpdatedDate(sqlDate);
 		order.setEmailAddress(customer.getEmailAddress());
 		order.setOrderStatus(PENDING_ORDER_STATUS);
 		CartData cartData = SessionUtils.getSessionVariables(request,

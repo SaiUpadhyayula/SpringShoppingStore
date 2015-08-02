@@ -26,7 +26,6 @@ import com.spring.shopping.service.CartService;
 import com.spring.shopping.service.MailSenderService;
 import com.spring.shopping.service.OrderService;
 import com.spring.shopping.service.PaymentService;
-import com.spring.shopping.service.ProductConfigService;
 import com.spring.shopping.util.SessionUtils;
 
 @Controller
@@ -38,8 +37,8 @@ public class OrderController {
 	private PaymentService paymentService;
 	@Autowired
 	private CartService cartService;
-	@Autowired
-	private ProductConfigService productConfigService;
+//	@Autowired
+//	private ProductConfigService productConfigService;
 	@Autowired
 	private MailSenderService mailSenderService;
 	@SuppressWarnings("unused")

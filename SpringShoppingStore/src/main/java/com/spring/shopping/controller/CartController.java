@@ -13,8 +13,6 @@ import com.spring.shopping.controller.constants.ControllerConstants;
 import com.spring.shopping.model.Customer;
 import com.spring.shopping.service.CartData;
 import com.spring.shopping.service.CartService;
-import com.spring.shopping.service.ProductConfigService;
-import com.spring.shopping.service.WishListService;
 import com.spring.shopping.util.SessionUtils;
 
 @Controller
@@ -22,12 +20,12 @@ public class CartController {
 
 	@Autowired
 	private CartService cartService;
-	@Autowired
-	private ProductConfigService productService;
-	@Autowired
-	private WishListService wishListService;
-	@Autowired
-	private CartData cartData;
+//	@Autowired
+//	private ProductConfigService productService;
+//	@Autowired
+//	private WishListService wishListService;
+//	@Autowired
+//	private CartData cartData;
 
 	private final static String cartPage = "cart";
 	private final static String redirectView = "redirect:/cart";

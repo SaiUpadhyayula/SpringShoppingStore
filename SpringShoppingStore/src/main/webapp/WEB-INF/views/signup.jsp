@@ -165,7 +165,7 @@
 									<!-- Button -->
 									<div class="col-md-offset-3 col-md-9">
 										<button id="btn-signup" type="submit" class="btn btn-info">
-											<i class="icon-hand-right"></i> &nbsp Sign Up
+											<i class="icon-hand-right"></i> Sign Up
 										</button>
 									</div>
 								</div>

@@ -79,9 +79,8 @@ public class WishListController {
 			CartData cartData = SessionUtils.getSessionVariables(request,
 					ControllerConstants.CART);
 			cartService.removeProduct(cartData, productId);
-			int numberOfItems = cartService.getNumberOfItems(cartData);
-			model.addAttribute("numberOfItems", numberOfItems);
-			model.addAttribute("cart", cartService);
+			cartService.getNumberOfItems(cartData);
+			model.addAttribute("cart", cartData);
 			return "cart";
 		} else {
 			return "redirect:cart?addWishList=False";

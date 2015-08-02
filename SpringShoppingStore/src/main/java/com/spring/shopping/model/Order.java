@@ -6,8 +6,8 @@ import java.util.Date;
 public class Order {
 
 	private Long orderId;
-	private java.sql.Date createdDate;
-	private java.sql.Date updatedDate;
+	private java.util.Date createdDate;
+	private java.util.Date updatedDate;
 	private String emailAddress;
 	private String orderStatus;
 	private BigDecimal orderTotal;
@@ -42,7 +42,7 @@ public class Order {
 		return createdDate;
 	}
 
-	public void setCreatedDate(java.sql.Date createdDate) {
+	public void setCreatedDate(java.util.Date createdDate) {
 		this.createdDate = createdDate;
 	}
 
@@ -50,7 +50,7 @@ public class Order {
 		return updatedDate;
 	}
 
-	public void setUpdatedDate(java.sql.Date updatedDate) {
+	public void setUpdatedDate(java.util.Date updatedDate) {
 		this.updatedDate = updatedDate;
 	}
 

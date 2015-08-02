@@ -15,8 +15,6 @@ import com.spring.shopping.model.AddressForm;
 import com.spring.shopping.model.Customer;
 import com.spring.shopping.service.AddressService;
 import com.spring.shopping.service.CartService;
-import com.spring.shopping.service.PaymentService;
-import com.spring.shopping.service.ProductConfigService;
 import com.spring.shopping.util.SessionUtils;
 
 @Controller
@@ -24,12 +22,12 @@ public class CheckoutController {
 
 	@Autowired
 	private CartService cartService;
-	@Autowired
-	private ProductConfigService productService;
+//	@Autowired
+//	private ProductConfigService productService;
 	@Autowired
 	private AddressService addressService;
-	@Autowired
-	private PaymentService paymentService;
+//	@Autowired
+//	private PaymentService paymentService;
 
 	private HttpSession session;
 

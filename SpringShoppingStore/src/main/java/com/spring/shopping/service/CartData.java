@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.spring.shopping.model.Customer;
 import com.spring.shopping.model.OrderItem;
 import com.spring.shopping.model.Product;
 
