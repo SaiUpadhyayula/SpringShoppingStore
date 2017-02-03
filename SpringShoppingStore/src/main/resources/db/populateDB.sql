@@ -5,7 +5,7 @@ INSERT IGNORE INTO `category` (`Category_Id`,`Name`) VALUES
  (1000128,'Games');
  
  INSERT IGNORE INTO `emaildetails` (`UserName`,`Password`) VALUES 
- ('info.demoproject','demoproject');
+ ('your email','your password');
  
  INSERT IGNORE INTO `subcategory` (`SubCategory_Id`,`Category_Id`,`Name`) VALUES 
  (1000100,1000125,'Apple'),
