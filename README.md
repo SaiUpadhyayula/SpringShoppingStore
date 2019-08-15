@@ -3,6 +3,9 @@ SpringShoppingStore is a sample shopping store which is under development.
 
 This project uses Spring MVC,Twitter Bootstrap, JDBC implementations.
 
+I am developing a more advanced Shopping Store in this repository : https://github.com/SaiUpadhyayula/NgSpringShoppingStore
+This app is developed using Spring Boot, MongoDB, Spring Security with JWT, ElasticSearch, Redis
+
 Features
 --------
 
